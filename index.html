@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pravas</title>
+<meta name="description" content="Chal Ga Sakhe: women-only group journeys. Concept E, Pravas: your ticket prints and tears open, you take the window seat, and the camera pulls back to show a whole train of sakhis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Space+Grotesk:wght@400;500;700&family=Caveat:wght@600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/photo-1649140068309-6f82e4db2081-2000.webp">
+<script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1"></script>
+<style>
+/* Concept E: Pravas (the journey). Reference map (motion/research/immersive-web/README.md):
+   ticket loader with real progress ...................... Crav ("READY TO CRAV!" mascot loader)
+   ticket tears open into the hero ....................... Voldog (card grows into the hero frame)
+   landscape never stops rushing past (ticker, not tween) . Corn Revolution (one continuous camera)
+   white-keyline type, stickers slapped on the glass ..... Crav ("THE BURGER", "SMASHED FRESH")
+   pull back: your window is one window of the coach ..... Jesko Jets (camera move reveals the object) + Lando (hero object)
+   coach windows = batches, counter while pinned ......... Jesko Jets (pinned object, spec columns) + The Shift (01/05)
+   tunnel into the split-flap departures board ........... Jesko Jets (rolling city list)
+   out of the tunnel, photos with hand-drawn scribbles ... Voldog (scribbles, loops) + Crav (wavy edges)
+   fill-in ticket that stamps and opens WhatsApp ......... Voldog (meal-finder quiz) + The Shift (live clock)
+   gallery strip of window frames slides on scroll ......... Corn Revolution (continuous camera) + Jesko (frames as objects)
+   voice-note testimonials ................................ Crav (chat-style proof, playful UI)
+   parents' FAQ as a TTE ticket check, punch on open ...... Voldog (tactile paper UI)
+   Testimonial and FAQ copy is SAMPLE copy: swap for real quotes and real policy before launch.
+   All photography is 3000 px+ source; nothing is scaled past 1.3x. */
+:root{
+  --maroon:#5A0F1E; --maroon-2:#3E0914; --turmeric:#F5B301; --rani:#E0457B; --cream:#FFF1DC; --paper:#F7E6C8; --ink:#1F0A10; --leaf:#2E6B3F; --board:#FFD400;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --disp:"Yatra One",serif; --sans:"Space Grotesk",system-ui,sans-serif; --hand:"Caveat",cursive; --mono:"Space Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html.lenis,html.lenis body{height:auto}
+html.lenis-stopped{overflow:hidden}
+/* no native scrollbar: it would appear when the intro ends and shift the whole page */
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{background:var(--maroon);color:var(--cream);font-family:var(--sans);font-size:16.5px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+.d{font-family:var(--disp);font-weight:400}
+.grain{position:fixed;inset:-50%;z-index:95;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:g 1s steps(6) infinite}
+@keyframes g{0%,100%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(3%,3%)}}
+
+/* ---------- Loader: the ticket (Crav energy) ---------- */
+.loader{position:fixed;inset:0;z-index:90;background:var(--maroon);display:grid;place-items:center;overflow:hidden}
+.slot{position:relative;width:min(420px,88vw)}
+.slot::before{content:"";position:absolute;left:-14px;right:-14px;top:-10px;height:16px;border-radius:10px;background:var(--maroon-2);box-shadow:inset 0 -3px 0 rgba(0,0,0,.4);z-index:2}
+.tkt{position:relative;color:var(--ink);filter:drop-shadow(0 30px 40px rgba(0,0,0,.35))}
+.half{background:var(--paper);padding:22px 24px;position:relative}
+.half.top{border-radius:0 0 4px 4px;padding-top:26px}
+.half.bot{border-radius:4px 4px 16px 16px;padding-bottom:20px}
+.perf{height:14px;background:radial-gradient(circle at 7px 7px,var(--maroon) 5px,transparent 5.5px) 0 0/14px 14px repeat-x,var(--paper);position:relative}
+.perf::after{content:"";position:absolute;left:12px;right:12px;top:6px;border-top:2px dashed rgba(31,10,16,.35)}
+.tkt .rly{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.tkt .rly b{font-family:var(--disp);font-size:20px;letter-spacing:0;text-transform:none;color:var(--maroon)}
+.route{display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px}
+.route div b{display:block;font-family:var(--disp);font-size:30px;line-height:1;color:var(--maroon)}
+.route div span{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.route i{flex:1;height:2px;margin:0 12px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 11px);position:relative}
+.route i::after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:var(--ink);border-right:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-family:var(--mono);font-size:12px}
+.grid span{display:block;font-size:9.5px;letter-spacing:.16em;opacity:.6}
+.pnr{display:flex;justify-content:space-between;align-items:flex-end;font-family:var(--mono)}
+.pnr b{font-size:26px;letter-spacing:.14em}
+.pnr small{font-size:10px;letter-spacing:.16em;opacity:.6}
+.bar{height:36px;margin-top:10px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 9px,var(--ink) 9px 10px,transparent 10px 13px);-webkit-mask:linear-gradient(90deg,#000 var(--p,0%),rgba(0,0,0,.12) var(--p,0%))}
+.stamp{position:absolute;right:18px;top:64px;z-index:3;padding:8px 16px;border:4px solid var(--rani);border-radius:10px;color:var(--rani);font-family:var(--mono);font-weight:700;font-size:20px;letter-spacing:.12em;transform:rotate(-12deg) scale(2.4);opacity:0;mix-blend-mode:multiply;pointer-events:none}
+.stamp small{display:block;font-family:var(--disp);font-size:18px;letter-spacing:0;text-align:center;line-height:1}
+.loader .cap{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,241,220,.6)}
+
+/* ---------- The stage: one pinned coach, one camera ---------- */
+.film{position:relative;height:100vh;height:100svh;overflow:hidden;background:var(--maroon)}
+.layer{position:absolute;inset:0;overflow:hidden}
+/* the coach wall: livery stripes, rivets, bogies */
+.wall{position:absolute;inset:0;background:linear-gradient(180deg,#61111F 0%,var(--maroon) 55%,#4C0C18 100%)}
+.wall::before{content:"";position:absolute;left:0;right:0;top:15vh;height:6px;background:var(--turmeric);box-shadow:0 12px 0 -2px var(--cream)}
+.wall::after{content:"";position:absolute;left:0;right:0;bottom:calc(12vh + 10px);height:6px;background:var(--turmeric);box-shadow:0 -12px 0 -2px var(--cream)}
+.rivets{position:absolute;left:0;right:0;top:calc(15vh - 18px);height:4px;background:radial-gradient(circle,rgba(0,0,0,.35) 1.5px,transparent 2px) 0 0/28px 4px repeat-x}
+.bogies{position:absolute;left:0;right:0;bottom:0;height:12vh;background:linear-gradient(#2B0A12,#1F0A10)}
+.bogies .ties{position:absolute;left:0;right:0;bottom:.9vh;height:6px;background:repeating-linear-gradient(90deg,#4A2A31 0 16px,transparent 16px 40px)}
+.bogies::after{content:"";position:absolute;left:0;right:0;bottom:.9vh;height:2px;background:#6B4A52}
+/* wheel sets ride inside the track, so they sit under every window, and spin with the train */
+.bog{position:absolute;bottom:1.5vh;height:var(--wd);z-index:1}
+.bog::before{content:"";position:absolute;left:0;right:0;top:38%;height:22%;border-radius:6px;background:#3A2328;box-shadow:0 -4px 0 #2B1419}
+.wh{position:absolute;top:0;width:var(--wd);height:var(--wd);margin-left:calc(var(--wd) / -2);border-radius:50%;background:radial-gradient(circle,var(--turmeric) 0 9%,#2A1017 10% 18%,transparent 19%),repeating-conic-gradient(#6B4A52 0 7deg,#140609 7deg 45deg);border:max(4px,.7vh) solid #4A2A31;box-shadow:0 0 0 2px #140609,inset 0 0 0 3px #140609;will-change:transform}
+.wh:nth-child(1){left:0}.wh:nth-child(2){left:100%}
+.coachno{position:absolute;right:4vw;top:calc(15vh + 26px);font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:rgba(255,241,220,.55)}
+.livery{position:absolute;left:50%;transform:translateX(-50%);top:calc(15vh - 58px);font-family:var(--disp);font-size:clamp(22px,2.2vw,34px);color:var(--turmeric);text-shadow:0 2px 0 var(--maroon-2)}
+.line{position:absolute;left:5vw;bottom:14vh;max-width:640px;opacity:0;z-index:6}
+.line .d{display:block;font-size:clamp(36px,4.4vw,66px);line-height:1.12}
+.line .en{font-size:clamp(17px,1.4vw,21px);color:rgba(255,241,220,.85)}
+/* the running view: clipped to wherever "your window" is */
+#view{z-index:3;background:#6E8C5A}
+.strip{position:absolute;top:-4%;left:0;height:108%;display:flex;will-change:transform}
+.strip .fr{position:relative;height:100%;flex:none}
+.strip img{height:100%;width:auto;max-width:none}
+/* a telegraph pole rides every join, so the loop never shows a seam */
+.strip .fr::after{content:"";position:absolute;right:-2.6vw;top:-5%;bottom:-5%;width:5.2vw;z-index:2;background:linear-gradient(90deg,rgba(20,14,10,0),rgba(20,14,10,.9) 35%,rgba(20,14,10,.9) 65%,rgba(20,14,10,0))}
+.poles{position:absolute;inset:0;pointer-events:none}
+.poles i{position:absolute;top:-5%;bottom:-5%;width:3.2vw;background:linear-gradient(90deg,rgba(20,14,10,0),rgba(20,14,10,.85) 35%,rgba(20,14,10,.85) 65%,rgba(20,14,10,0))}
+.glare{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.12) 42%,rgba(255,255,255,0) 50%),radial-gradient(120% 90% at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.35) 100%);pointer-events:none}
+#ring{position:absolute;z-index:4;border-radius:34px;box-shadow:0 0 0 10px var(--maroon-2),0 0 0 13px rgba(245,179,1,.55),inset 0 20px 40px rgba(0,0,0,.35);pointer-events:none}
+/* type + stickers on the glass */
+.head{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;z-index:7;pointer-events:none}
+.head h1{font-family:var(--disp);font-weight:400;font-size:clamp(78px,13vw,230px);line-height:.95;color:var(--turmeric);-webkit-text-stroke:3px var(--maroon-2);paint-order:stroke fill;text-shadow:6px 6px 0 var(--maroon-2),0 18px 60px rgba(0,0,0,.4)}
+.head h1 .ch{display:inline-block}
+.head p{font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.04em;margin-top:8px;opacity:0;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.stk{position:absolute;z-index:8;padding:10px 18px;border-radius:14px;font-weight:700;font-size:clamp(14px,1.2vw,18px);line-height:1.1;box-shadow:0 0 0 4px #fff,0 14px 30px rgba(0,0,0,.35);opacity:0;white-space:nowrap}
+.stk.d{font-family:var(--disp);font-weight:400;font-size:clamp(20px,1.8vw,28px)}
+.s1{left:9vw;top:18vh;background:var(--rani);color:#fff;transform:rotate(-8deg)}
+.s2{right:10vw;top:21vh;background:var(--turmeric);color:var(--ink);transform:rotate(6deg)}
+.s3{left:14vw;bottom:19vh;background:var(--cream);color:var(--maroon);transform:rotate(5deg)}
+.s4{right:13vw;bottom:16vh;background:var(--leaf);color:#fff;transform:rotate(-5deg);border-radius:999px}
+/* the coach windows = batches */
+.rhead{position:absolute;left:4vw;top:calc(15vh + 36px);z-index:6;opacity:0}
+.rhead .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--turmeric)}
+.rhead h2{font-family:var(--disp);font-weight:400;font-size:clamp(28px,2.6vw,42px);line-height:1;margin-top:6px}
+.rhead .count{font-family:var(--mono);font-size:13px;margin-top:10px;letter-spacing:.14em;color:rgba(255,241,220,.7)}
+.track{position:absolute;left:0;top:0;height:100%;z-index:5;will-change:transform;opacity:0}
+.cw{position:absolute;top:var(--wy);width:var(--ww)}
+.cw .glass{height:var(--wh);border-radius:34px;overflow:hidden;position:relative;box-shadow:0 0 0 10px var(--maroon-2),0 0 0 13px rgba(245,179,1,.55),inset 0 20px 40px rgba(0,0,0,.35)}
+.cw .glass img{position:absolute;inset:0;width:118%;height:100%;object-fit:cover}
+.cw .glass::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.14) 42%,rgba(255,255,255,0) 50%)}
+.cw .brd{position:absolute;left:50%;top:-60px;transform:translateX(-50%) rotate(-2deg);background:var(--board);color:var(--ink);border:3px solid var(--ink);border-radius:6px;padding:3px 16px;text-align:center;line-height:1.1;box-shadow:0 6px 0 var(--ink);white-space:nowrap}
+.cw .brd b{display:block;font-family:var(--disp);font-weight:400;font-size:22px}
+.cw .brd span{font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.cw .info{margin-top:22px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.cw h3{font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.8vw,30px);line-height:1.1}
+.cw .m{margin-top:8px;color:rgba(255,241,220,.85)}
+.cw .m b{display:block;font-family:var(--mono);font-size:clamp(15px,1.15vw,18px);font-weight:700;letter-spacing:0;white-space:nowrap;color:var(--turmeric)}
+.cw .m span{display:block;font-size:clamp(14px,1.05vw,16px);margin-top:3px}
+.cw .r{text-align:right;flex:none}
+.cw .price{font-weight:700;font-size:clamp(20px,1.5vw,24px)}
+.seats{display:inline-block;font-size:13px;font-weight:700;padding:4px 11px;border-radius:999px;background:rgba(255,241,220,.12);white-space:nowrap;margin-left:8px;vertical-align:2px}
+.seats.hot{background:var(--rani);color:#fff}
+.cw .ask{display:inline-flex;align-items:center;gap:8px;margin-top:10px;height:42px;padding:0 18px;border-radius:999px;background:var(--turmeric);color:var(--ink);font-weight:700;font-size:14px}
+.cw.you .tag{position:absolute;left:0;right:0;bottom:-44px;text-align:center;font-family:var(--hand);font-size:28px;color:var(--turmeric);opacity:0}
+#tunnel{position:absolute;inset:0;z-index:9;background:radial-gradient(60% 80% at 0% 50%,#2B0A12 0%,var(--ink) 60%);transform:translateX(100%)}
+.skip{position:absolute;right:20px;top:20px;z-index:12;height:38px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(31,10,16,.55);color:var(--cream)}
+.skip[hidden]{display:none}
+
+/* fixed UI */
+.hbar{position:fixed;left:0;right:0;top:0;height:72px;z-index:59;background:var(--cream);box-shadow:0 2px 0 var(--turmeric),0 8px 24px rgba(0,0,0,.18);opacity:0;transition:opacity .8s;pointer-events:none}
+.brand{position:fixed;left:22px;top:20px;z-index:60;font-family:var(--disp);font-size:24px;color:var(--maroon);opacity:0;transition:opacity .8s}
+.ticketbtn{position:fixed;right:18px;top:12px;z-index:60;display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 16px;background:var(--maroon);color:var(--cream);font-weight:700;font-size:14px;border-radius:8px;opacity:0;transition:opacity .8s,transform .3s var(--ease);-webkit-mask:radial-gradient(circle at 0 50%,transparent 7px,#000 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,#000 7.5px) right/51% 100% no-repeat}
+.ticketbtn:hover{transform:rotate(-2deg) scale(1.03)}
+.ticketbtn i{font-size:20px;color:var(--turmeric)}
+
+/* ---------- Departures board, lit inside the tunnel ---------- */
+.dep{position:relative;padding:16vh 5vw 18vh;background:var(--ink)}
+.dep .lamp{position:absolute;left:50%;top:0;width:70vw;height:60vh;transform:translateX(-50%);background:radial-gradient(50% 60% at 50% 0%,rgba(245,179,1,.16),rgba(245,179,1,0));pointer-events:none}
+.dep h2{position:relative;font-family:var(--disp);font-weight:400;font-size:clamp(40px,4.6vw,76px);line-height:1;color:var(--board)}
+.dep .sub{position:relative;color:rgba(255,241,220,.7);margin:8px 0 34px}
+.boardg{position:relative;background:#140609;border-radius:16px;padding:20px;box-shadow:inset 0 0 0 2px #2B1419,0 30px 80px -30px rgba(245,179,1,.15)}
+.rowb{display:grid;grid-template-columns:1.1fr 1.6fr 1fr .8fr 1fr;gap:16px;align-items:center;padding:14px 8px;border-bottom:1px solid #2B1419;font-family:var(--mono);font-size:14px}
+.rowb.h{font-size:10.5px;letter-spacing:.2em;color:rgba(255,241,220,.5)}
+.flap{display:inline-flex;gap:3px}
+.flap i{display:inline-grid;place-items:center;width:1.25em;height:1.7em;background:#2A1017;border-radius:3px;font-style:normal;font-weight:700;color:var(--board);position:relative;overflow:hidden}
+.flap i::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#140609}
+.rowb .st{font-weight:700}
+.rowb .st.hot{color:var(--rani)}
+.rowb a{justify-self:end;display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;background:var(--turmeric);color:var(--ink);font-weight:700;font-size:13px;font-family:var(--sans)}
+@media (max-width:860px){.rowb{grid-template-columns:1fr 1fr;row-gap:8px}.rowb.h{display:none}.rowb a{justify-self:start}}
+
+/* ---------- Out of the tunnel: doodled photos (Voldog) ---------- */
+.why{position:relative;padding:20vh 5vw 20vh;background:var(--cream);color:var(--ink);overflow:hidden}
+.wave{position:absolute;left:0;width:100%;top:-1px;height:90px;z-index:3;pointer-events:none}
+.why .burst{position:absolute;left:50%;top:0;width:160vw;height:160vw;transform:translate(-50%,-50%) scale(0);border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,255,255,0) 60%);pointer-events:none}
+.why h2{position:relative;font-family:var(--disp);font-weight:400;font-size:clamp(44px,5.4vw,90px);line-height:1;color:var(--maroon);text-align:center}
+.why .sub{text-align:center;color:#5B4046;margin-top:8px}
+.snaps{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:4vw;margin-top:10vh;align-items:start}
+@media (max-width:860px){.snaps{grid-template-columns:1fr}}
+.snap{position:relative;background:#fff;padding:12px 12px 16px;box-shadow:0 20px 40px -20px rgba(31,10,16,.4)}
+.snap:nth-child(1){transform:rotate(-3deg)}.snap:nth-child(2){transform:rotate(2deg);margin-top:8vh}.snap:nth-child(3){transform:rotate(-1.5deg)}
+.snap img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.snap .note{font-family:var(--hand);font-size:26px;line-height:1.05;color:var(--maroon);margin-top:10px}
+.snap p{font-size:14px;color:#5B4046;margin-top:4px}
+.scrib{position:absolute;pointer-events:none;overflow:visible}
+.scrib path{fill:none;stroke:var(--rani);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+
+
+/* ---------- Gallery: a strip of window frames, slid by the scroll ---------- */
+.gal{position:relative;padding:14vh 0 12vh;background:var(--maroon-2);overflow:hidden}
+.gal .hd{padding:0 5vw;margin-bottom:6vh}
+.gal .k,.vn .k,.faq .k{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--turmeric)}
+.gal h2,.vn h2,.faq h2{font-family:var(--disp);font-weight:400;font-size:clamp(40px,5vw,80px);line-height:1;margin-top:8px}
+.gal .hd p,.faq .hd p{color:rgba(255,241,220,.75);margin-top:10px;font-size:clamp(15px,1.2vw,18px)}
+.gwrap{overflow:hidden;cursor:grab;touch-action:pan-y;outline-offset:-4px}
+.gwrap.drag{cursor:grabbing}
+.gstrip{display:flex;gap:3vw;padding:0 5vw 1vh;will-change:transform;width:max-content;user-select:none;-webkit-user-select:none}
+.gctl{display:flex;align-items:center;gap:18px;padding:5vh 5vw 0}
+.gctl button{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--turmeric);box-shadow:inset 0 0 0 2px rgba(245,179,1,.55);transition:background .2s,color .2s}
+.gctl button:hover{background:var(--turmeric);color:var(--ink)}
+.gbar{flex:1;height:4px;border-radius:2px;background:rgba(255,241,220,.18);overflow:hidden}
+.gbar i{display:block;height:100%;width:100%;background:var(--turmeric);transform-origin:left;transform:scaleX(.1)}
+.gcount{flex:none;font-family:var(--mono);font-size:14px;letter-spacing:.14em;color:rgba(255,241,220,.8);min-width:70px;text-align:right}
+.gf{flex:none;width:clamp(260px,26vw,440px)}
+.gf:nth-child(even){margin-top:8vh}
+.gf .gl{aspect-ratio:4/5;border-radius:34px;overflow:hidden;box-shadow:0 0 0 10px var(--maroon),0 0 0 13px rgba(245,179,1,.55)}
+.gf img{width:100%;height:100%;object-fit:cover;display:block}
+.gf figcaption{margin-top:26px;font-family:var(--hand);font-size:clamp(24px,2vw,32px);color:var(--turmeric);line-height:1}
+.gf figcaption small{display:block;font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:rgba(255,241,220,.7);margin-top:6px;text-transform:uppercase}
+@media (prefers-reduced-motion:reduce){.gwrap{overflow-x:auto}.gctl{display:none}}
+
+/* ---------- Voice notes ---------- */
+.vn{position:relative;padding:14vh 5vw;background:var(--cream);color:var(--ink)}
+.vn h2{color:var(--maroon)}
+.vn .k{color:var(--rani)}
+.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 4vw;margin-top:7vh;max-width:1100px;align-items:start}
+@media (max-width:860px){.vgrid{grid-template-columns:1fr}}
+.vnote{background:#fff;border-radius:22px 22px 22px 6px;padding:18px 20px;box-shadow:0 20px 40px -24px rgba(31,10,16,.45)}
+.vnote:nth-child(even){border-radius:22px 22px 6px 22px;background:#E9F5D9;margin-top:5vh}
+@media (max-width:860px){.vnote:nth-child(even){margin-top:0}}
+.vrow{display:flex;align-items:center;gap:14px}
+.vplay{flex:none;width:52px;height:52px;border-radius:50%;background:var(--leaf);color:#fff;display:grid;place-items:center;font-size:22px}
+.vbars{flex:1;display:flex;align-items:center;gap:3px;height:40px;position:relative}
+.vbars i{flex:1;min-width:2px;border-radius:2px;background:#B9AFA6;transform-origin:center}
+.vbars i.on{background:var(--leaf)}
+.vnote.play .vbars i{animation:vb .9s ease-in-out infinite alternate}
+@keyframes vb{from{transform:scaleY(.55)}to{transform:scaleY(1.15)}}
+@media (prefers-reduced-motion:reduce){.vnote.play .vbars i{animation:none}}
+.vtime{font-family:var(--mono);font-size:13px;color:#6B5B5F;flex:none}
+.vtxt{margin-top:12px;font-size:clamp(16px,1.25vw,19px);line-height:1.45;color:#3A2A2E}
+.vwho{margin-top:10px;font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:#6B5B5F}
+.vwho b{color:var(--maroon)}
+
+/* ---------- Parents' FAQ: the ticket check ---------- */
+.faq{position:relative;padding:14vh 5vw 16vh;background:var(--ink)}
+.faq .wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:6vw;max-width:1200px;margin:0 auto}
+@media (max-width:900px){.faq .wrap{grid-template-columns:1fr}}
+.faq .hd{align-self:start;position:sticky;top:12vh}
+@media (max-width:900px){.faq .hd{position:static}}
+.faq h2{color:var(--board)}
+.faq .mom{display:inline-flex;align-items:center;gap:10px;margin-top:26px;height:52px;padding:0 22px;border-radius:999px;background:var(--leaf);color:#fff;font-weight:700;font-size:16px}
+.qs{display:grid;gap:14px}
+.q{position:relative;background:var(--paper);color:var(--ink);border-radius:12px;-webkit-mask:radial-gradient(circle at 0 50%,transparent 9px,#000 9.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 9px,#000 9.5px) right/51% 100% no-repeat}
+.q button{width:100%;text-align:left;display:flex;align-items:center;gap:16px;padding:20px 26px;font-family:var(--disp);font-size:clamp(19px,1.6vw,26px);line-height:1.2;color:var(--maroon)}
+.q button .no{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:#8A6F58;flex:none}
+.q button .pm{margin-left:auto;flex:none;font-size:22px;transition:transform .35s var(--ease)}
+.q .punch{position:absolute;right:62px;top:26px;width:18px;height:18px;border-radius:50%;background:var(--ink);transform:scale(0);transition:transform .3s cubic-bezier(.34,1.8,.64,1)}
+.q.open .punch{transform:scale(1)}
+.q.open .pm{transform:rotate(45deg)}
+.q .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.q.open .ans{grid-template-rows:1fr}
+.q .ans > div{overflow:hidden}
+.q .ans p{padding:0 26px 22px 74px;font-size:clamp(16px,1.2vw,18px);line-height:1.55;color:#3A2A2E}
+@media (prefers-reduced-motion:reduce){.q .ans,.q .punch,.q .pm{transition:none}}
+@media (max-width:600px){.q button{padding:16px 18px;gap:10px}.q .ans p{padding:0 18px 18px 18px}.q .punch{right:50px;top:22px}}
+
+/* ---------- Finale: fill in your own ticket, stamp it, send it ---------- */
+.fin{position:relative;min-height:100vh;padding:16vh 5vw 190px;background:var(--maroon);overflow:hidden}
+.fin .hd{text-align:center;max-width:760px;margin:0 auto 6vh}
+.fin .hd .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--turmeric)}
+.fin .hd h2{font-family:var(--disp);font-weight:400;font-size:clamp(44px,5.6vw,88px);line-height:1;margin-top:8px}
+.fin .hd p{color:rgba(255,241,220,.75);margin-top:10px}
+.builder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);gap:5vw;align-items:center;max-width:1180px;margin:0 auto}
+@media (max-width:920px){.builder{grid-template-columns:1fr}}
+.form label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,241,220,.65);margin:0 0 8px}
+.form .f{margin-bottom:22px}
+.form input{width:100%;height:52px;border-radius:12px;border:0;background:rgba(255,241,220,.1);box-shadow:inset 0 0 0 1.5px rgba(255,241,220,.2);padding:0 16px;font-size:17px;color:var(--cream);outline:none;transition:box-shadow .2s}
+.form input:focus{box-shadow:inset 0 0 0 2px var(--turmeric)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{height:42px;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1.5px rgba(255,241,220,.25);font-weight:700;font-size:14px;transition:background .2s,color .2s,box-shadow .2s}
+.chips button[aria-pressed="true"]{background:var(--turmeric);color:var(--ink);box-shadow:none}
+.stepper{display:inline-flex;align-items:center;gap:6px;height:48px;border-radius:999px;box-shadow:inset 0 0 0 1.5px rgba(255,241,220,.25);padding:0 6px}
+.stepper button{width:36px;height:36px;border-radius:50%;background:rgba(255,241,220,.1);font-size:18px}
+.stepper output{min-width:34px;text-align:center;font-weight:700;font-size:17px}
+.big{position:relative;color:var(--ink);transform:rotate(-2deg)}
+.big .half{padding:26px 30px}
+.big .rly b{font-size:22px}
+.big .route div b{font-size:clamp(30px,3.2vw,44px)}
+.big .pas{font-family:var(--disp);font-size:clamp(24px,2.2vw,32px);color:var(--maroon);line-height:1.1;margin-top:4px;min-height:1.1em}
+.big .bl{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
+.big .stamp{top:auto;bottom:70px;right:26px}
+.send{display:flex;align-items:center;justify-content:center;gap:10px;height:58px;width:100%;margin-top:26px;border-radius:999px;background:var(--leaf);color:#fff;font-weight:700;font-size:16px;transition:transform .25s var(--ease)}
+.send:hover{transform:translateY(-2px)}
+.note{font-size:13px;color:rgba(255,241,220,.6);margin-top:10px;text-align:center}
+/* the footer train runs forever along the platform */
+.platform{position:absolute;left:0;right:0;bottom:0;height:180px;background:linear-gradient(transparent,rgba(0,0,0,.25))}
+.platform .rail{position:absolute;left:0;right:0;bottom:84px;height:6px;background:repeating-linear-gradient(90deg,#2B0A12 0 18px,transparent 18px 30px)}
+.mini{position:absolute;bottom:90px;left:0;display:flex;gap:8px;will-change:transform}
+.mini i{display:block;width:120px;height:44px;border-radius:10px;background:var(--turmeric);box-shadow:inset 0 -8px 0 rgba(0,0,0,.15)}
+.mini i::before{content:"";display:block;margin:9px 12px;height:14px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--ink) 0 18px,transparent 18px 26px)}
+.mini i:last-child{width:110px;border-radius:10px 30px 10px 10px;background:var(--cream)}
+.fin .foot{position:absolute;left:5vw;right:5vw;bottom:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,241,220,.6)}
+.fin .foot b{color:var(--turmeric)}
+.fin .foot a:hover{color:var(--cream)}
+@media(max-width:700px){.platform .rail{bottom:112px}.mini{bottom:118px}.platform{height:210px}}
+@media (max-width:760px){.head h1{font-size:17vw;-webkit-text-stroke:2px var(--maroon-2)}.head p{padding:0 6vw}.s3{bottom:26vh}.s4{bottom:15vh}.s1{top:14vh}.s2{top:22vh}.rhead h2{font-size:28px}.livery{display:none}}
+/* phones, 300 to 500 px */
+@media (max-width:600px){
+  .pnr b{font-size:19px;letter-spacing:.08em}.half{padding:18px}.route div b{font-size:24px}.tkt .rly b{font-size:17px}
+  .hbar{height:64px}.brand{font-size:19px;left:14px;top:21px}.ticketbtn{height:40px;padding:0 12px 0 10px;font-size:12px;right:12px;gap:6px}.ticketbtn i{font-size:16px}
+  .coachno{display:none}.rhead{top:calc(15vh + 22px);left:5vw;right:5vw}.rhead .k{font-size:10px;letter-spacing:.14em}
+  .cw .brd b{font-size:18px}.cw .brd span{font-size:10.5px}.cw .info{margin-top:18px}.cw h3{font-size:17px}.cw .m b{font-size:14px}.cw .m span{font-size:13px}.cw .price{font-size:17px}.cw .ask{height:34px;padding:0 12px;font-size:12px}
+  .cw.you .tag{font-size:22px;bottom:-36px}
+  .dep{padding:12vh 5vw}.boardg{padding:10px}
+  .rowb{grid-template-columns:1fr auto;gap:8px 10px;font-size:12px;padding:14px 4px}
+  .rowb > span:nth-child(2){grid-column:1 / -1;order:3;color:rgba(255,241,220,.7)}
+  .rowb > .flap:nth-child(3){order:4}.rowb a{order:5;justify-self:end;height:34px}
+  .flap i{width:1.1em;height:1.55em}
+  .why{padding:14vh 6vw}.why h2{font-size:40px}
+  .fin{padding:12vh 5vw 190px}.fin .hd h2{font-size:40px}.big .half{padding:20px}.big .route div b{font-size:28px}.big .pas{font-size:22px}.big .bl{font-size:10px}
+  .fin .foot{font-size:10px;letter-spacing:.12em}
+}
+@media (prefers-reduced-motion:reduce){.grain{animation:none}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- LOADER: your ticket prints while the page loads -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="slot">
+    <div class="tkt" id="tkt">
+      <div class="half top" id="tTop">
+        <div class="rly"><b lang="mr">चल गं सखे</b><span>Sakhi Express · 1101</span></div>
+        <div class="route"><div><b lang="mr">पुणे</b><span>PUNE JN</span></div><i></i><div style="text-align:right"><b lang="mr">हंपी</b><span>HAMPI</span></div></div>
+        <div class="grid"><div><span>PASSENGER</span>YOU + 24 SAKHIS</div><div><span>COACH / BERTH</span>S-AKHI / WINDOW</div><div><span>DATE</span>11 DEC 2026</div><div><span>QUOTA</span>WOMEN ONLY</div></div>
+      </div>
+      <div class="perf"></div>
+      <div class="half bot" id="tBot">
+        <div class="pnr"><div><small>PNR</small><br><b id="pnr">000-0000000</b></div><small id="pct">PRINTING 0%</small></div>
+        <div class="bar" id="bar"></div>
+      </div>
+      <div class="stamp" id="stamp">CONFIRMED<small lang="mr">पक्कं!</small></div>
+    </div>
+  </div>
+  <div class="cap" id="lcap">Printing your ticket</div>
+</div>
+
+<div class="hbar" id="hbar" aria-hidden="true"></div>
+<a class="brand" id="brand" href="#top" lang="mr">चल गं सखे</a>
+<a class="ticketbtn" id="tbtn" href="#fin"><i class="ph ph-ticket"></i>Book your berth</a>
+
+<main id="top">
+<section class="film" id="film" aria-label="From the train window, the hills rush past. The camera pulls back: your window is one of many on the Sakhi Express.">
+  <div class="wall" aria-hidden="true"><div class="rivets"></div><div class="coachno">COACH S-AKHI · WOMEN ONLY</div><div class="livery" lang="mr">सखी एक्सप्रेस</div><div class="bogies" id="bogies"><i class="ties" id="ties"></i></div></div>
+
+  <div class="layer" id="view" aria-hidden="true">
+    <div class="strip" id="strip"></div>
+    <div class="poles" id="poles"><i></i><i></i></div>
+    <div class="glare"></div>
+  </div>
+  <div id="ring" aria-hidden="true"></div>
+
+  <div class="rhead" id="rhead"><div class="k">Now boarding · every window is a batch</div><h2 lang="mr">सगळे डबे सख्यांचे.</h2><div class="count" id="ccount">WINDOW 1 / 5</div></div>
+  <div class="track" id="track"></div>
+
+  <div class="head" id="head"><h1 lang="mr" id="h1" aria-label="चल गं सखे!">चल गं सखे!</h1><p id="hsub">Women-only group trips from Pune &amp; Mumbai. Book alone, come back with 24 sisters.</p></div>
+  <div class="stk s1 d" id="k1" lang="mr">फक्त मुली!</div>
+  <div class="stk s2" id="k2">25 women max</div>
+  <div class="stk s3" id="k3">Pune → Hampi · 11 Dec</div>
+  <div class="stk s4" id="k4">Female trip captain ✓</div>
+  <div id="tunnel" aria-hidden="true"></div>
+  <button class="skip" id="skip" type="button">Skip</button>
+</section>
+
+<section class="dep" id="dep" aria-label="Departures">
+  <div class="lamp" aria-hidden="true"></div>
+  <h2>Departures</h2>
+  <p class="sub">Seats update from real bookings. When a row says 03, it means three.</p>
+  <div class="boardg" id="boardg">
+    <div class="rowb h"><span>Destination</span><span>Journey</span><span>Departs</span><span>Seats</span><span></span></div>
+  </div>
+</section>
+
+<section class="why" id="why" aria-label="Why travel with us">
+  <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path id="wave1" d="M0 0 H1440 V50 C1180 10 960 90 720 40 C480 -10 260 80 0 40 Z" fill="#1F0A10"/></svg>
+  <div class="burst" id="burst" aria-hidden="true"></div>
+  <h2 lang="mr">गाडीत बसल्यावर<br>अनोळखी कोणी नसतं.</h2>
+  <p class="sub">Nobody stays a stranger once the train starts.</p>
+  <div class="snaps">
+    <figure class="snap"><img src="img/photo-1575561723050-3a69691d9700-800.webp" alt="Two women laughing on a beach in the evening sun" loading="lazy"><div class="note">day 1, 7am: two strangers, one berth</div><p>Rooms and berths are shared with women on your batch, twin or triple.</p>
+      <svg class="scrib" style="right:-30px;top:-34px;width:120px;height:90px" viewBox="0 0 120 90"><path d="M10 70 C30 20 70 10 105 30 M92 18 l14 12 -18 6"/></svg></figure>
+    <figure class="snap"><img src="img/photo-1786596552158-fb0aa2d260ba-800.webp" alt="Three women sitting together at a heritage site" loading="lazy"><div class="note">20 to 63, same coach ♥</div><p>A female trip captain plans every day and travels with you.</p>
+      <svg class="scrib" style="left:-26px;bottom:60px;width:260px;height:200px" viewBox="0 0 260 200"><path d="M130 20 C40 20 10 90 40 150 C70 200 210 190 240 130 C260 70 200 10 120 24"/></svg></figure>
+    <figure class="snap"><img src="img/photo-1667029839636-af119b059c49-800.webp" alt="Three women with their arms raised, looking at the mountains" loading="lazy"><div class="note">"see you on the next one?"</div><p>Pickup from Pune or Mumbai. Your WhatsApp group opens a week before.</p>
+      <svg class="scrib" style="left:30%;top:-40px;width:140px;height:60px" viewBox="0 0 140 60"><path d="M6 40 C20 10 34 50 48 22 C62 -4 76 46 90 20 C104 -4 118 40 134 18"/></svg></figure>
+  </div>
+</section>
+
+
+<section class="gal" id="gal" aria-label="Photo gallery">
+  <div class="hd"><div class="k">Window seat gallery</div><h2 lang="mr">खिडकीतून दिसलेलं.</h2><p>Frames from the last few rides. Drag, swipe, or tap the arrows. It also drifts as you scroll.</p></div>
+  <div class="gwrap" id="gwrap" tabindex="0" aria-label="Photo gallery. Drag, scroll sideways, or use the arrow keys.">
+  <div class="gstrip" id="gstrip">
+    <figure class="gf"><div class="gl"><img src="img/photo-1689946727883-0a520a4be63e-1100.webp" alt="Hampi ruins at sunset" loading="lazy" draggable="false"></div><figcaption>golden hour at Hampi<small>Hampi</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1575561723050-3a69691d9700-1100.webp" alt="Two women laughing on a beach" loading="lazy" draggable="false"></div><figcaption>the beach got loud<small>Goa</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1718799341635-4a6a41c3bc0f-1100.webp" alt="Udaipur lake in warm light" loading="lazy" draggable="false"></div><figcaption>lake, lanterns, chai<small>Udaipur</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1616604248350-6038cc1af5e4-1100.webp" alt="Two friends in a field at sunset, arms raised" loading="lazy" draggable="false"></div><figcaption>arms up, phones down<small>Day 3</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1786596552158-fb0aa2d260ba-1100.webp" alt="Three women at a heritage site" loading="lazy" draggable="false"></div><figcaption>three strangers, one photo<small>Day 2</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1609828913552-f9138ed9e42d-1100.webp" alt="Kerala houseboat and palms" loading="lazy" draggable="false"></div><figcaption>palms all the way<small>Kerala</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1536010305525-f7aa0834e2c7-1100.webp" alt="Friends walking and laughing" loading="lazy" draggable="false"></div><figcaption>walking, talking, late<small>Day 1</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1631675345695-65d396b023a7-1100.webp" alt="A woman sitting on a boulder above the Hampi valley" loading="lazy" draggable="false"></div><figcaption>boulder with a view<small>Hampi</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1720875733075-fd8494df7908-1100.webp" alt="A tray of chai glasses" loading="lazy" draggable="false"></div><figcaption>chai o'clock, every hour<small>Udaipur</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1573269354259-8c108692afa1-1100.webp" alt="Friends jumping on a beach at sunset" loading="lazy" draggable="false"></div><figcaption>jump first, ask later<small>Goa</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1765418933092-01c5c8cd783f-1100.webp" alt="A woman with an orange scarf in the tea hills" loading="lazy" draggable="false"></div><figcaption>orange scarf, green hills<small>Kerala</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1681640332619-51d843674814-1100.webp" alt="Two women laughing together" loading="lazy" draggable="false"></div><figcaption>the joke nobody remembers<small>Day 2</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1697489945624-96198687f28e-1100.webp" alt="Three women with arms around each other watching the sunset" loading="lazy" draggable="false"></div><figcaption>sunset, shoulder to shoulder<small>Day 3</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1649771655714-109e312a6643-1100.webp" alt="Two friends hugging at sunset" loading="lazy" draggable="false"></div><figcaption>goodbye hugs, early<small>Last day</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1667029839636-af119b059c49-1100.webp" alt="Women with arms raised facing mountains" loading="lazy" draggable="false"></div><figcaption>the mountains said hi<small>Day 3</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1588320070032-53d7c450da75-1100.webp" alt="Boulder landscape" loading="lazy" draggable="false"></div><figcaption>boulders at 6 am<small>Hampi</small></figcaption></figure>
+    <figure class="gf"><div class="gl"><img src="img/photo-1625763253642-2fc6b256d87c-1100.webp" alt="Friends in a vintage car" loading="lazy" draggable="false"></div><figcaption>back seat, front row<small>Day 2</small></figcaption></figure>
+  </div>
+  </div>
+  <div class="gctl"><button type="button" id="gprev" aria-label="Previous photos"><i class="ph ph-arrow-left"></i></button><div class="gbar" aria-hidden="true"><i id="gfill"></i></div><span class="gcount" id="gcount">01 / 17</span><button type="button" id="gnext" aria-label="Next photos"><i class="ph ph-arrow-right"></i></button></div>
+</section>
+
+<section class="vn" id="vn" aria-label="Voice notes from sakhis">
+  <div class="k">Voice notes from the coach</div>
+  <h2 lang="mr">त्यांनी पाठवलेले मेसेज.</h2>
+  <div class="vgrid" id="vgrid"></div>
+</section>
+
+<section class="faq" id="faq" aria-label="Questions parents ask">
+  <div class="wrap">
+    <div class="hd"><div class="k">Ticket check</div><h2 lang="mr">आईला विचारायचंय?</h2><p>Questions parents ask before saying yes. Short, honest answers.</p>
+      <a class="mom" href="#" id="mom" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Send this to your mom</a></div>
+    <div class="qs" id="qs"></div>
+  </div>
+</section>
+
+<section class="fin" id="fin" aria-label="Book your berth">
+  <div class="hd"><div class="k">Last call · platform 1</div><h2 lang="mr">तुझं तिकीट, तुझ्या नावाने.</h2><p>Fill it in. We stamp it, and it lands in our WhatsApp with everything we need.</p></div>
+  <div class="builder">
+    <form class="form" id="form" onsubmit="return false">
+      <div class="f"><label for="nm">Your name</label><input id="nm" autocomplete="given-name" placeholder="Aditi" maxlength="24"></div>
+      <div class="f"><label>Where to?</label><div class="chips" id="dest" role="group" aria-label="Destination"></div></div>
+      <div class="f"><label>Pickup</label><div class="chips" id="pick" role="group" aria-label="Pickup"><button type="button" aria-pressed="true" data-v="Pune">Pune</button><button type="button" aria-pressed="false" data-v="Mumbai">Mumbai</button></div></div>
+      <div class="f"><label>Travellers</label><div class="stepper"><button type="button" id="minus" aria-label="One fewer">−</button><output id="cnt">1</output><button type="button" id="plus" aria-label="One more">+</button></div></div>
+    </form>
+    <div>
+      <div class="big tkt" id="myT">
+        <div class="half top">
+          <div class="rly"><b lang="mr">चल गं सखे</b><span>Sakhi Express · 1101</span></div>
+          <div class="route"><div><b id="tFrom" lang="mr">पुणे</b><span id="tFromE">PUNE JN</span></div><i></i><div style="text-align:right"><b id="tTo" lang="mr">हंपी</b><span id="tToE">HAMPI</span></div></div>
+          <div class="grid"><div><span>PASSENGER</span><div class="pas" id="tName">Your name here</div></div><div><span>DATE</span><b id="tDate">11 DEC 2026</b></div><div><span>TRAVELLERS</span><b id="tCnt">1 + THE GROUP</b></div><div><span>SEATS LEFT</span><b id="tSeats">6</b></div></div>
+        </div>
+        <div class="perf"></div>
+        <div class="half bot"><div class="bl"><span id="tPnr">PNR 842-5519073</span><span id="tPrice">₹12,499 · BOOK WITH ₹5,000</span></div></div>
+        <div class="stamp" id="stamp2">SENT<small lang="mr">चल गं!</small></div>
+      </div>
+      <a class="send" id="send" href="#" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Stamp it &amp; send on WhatsApp</a>
+      <p class="note">No payment here. We reply with dates, seats and the full plan.</p>
+    </div>
+  </div>
+  <div class="platform" aria-hidden="true"><div class="rail"></div><div class="mini" id="mini"></div></div>
+  <div class="foot"><span>Pune · <b id="clk">--:--</b></span><span>Next departure in <b id="days">--</b> days</span><a href="#dep">Departures</a><a href="#" data-wa>WhatsApp</a><span>© 2026 Chal Ga Sakhe</span></div>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script>
+const WA = '918454810366';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+scrollTo(0, 0);
+const waLink = t => `https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
+$$('[data-wa]').forEach(a => { a.href = waLink('Hi Chal Ga Sakhe! I want to book a berth on your next women-only batch.'); a.target = '_blank'; a.rel = 'noopener'; });
+const IMG = (id, w) => `img/${id}-${w}.webp`;
+
+// the journey out of the window (all 3800 px+): tea hills, the Goa coast, Hampi boulders, Udaipur's lake, Hampi at sunset
+const VIEW = ['photo-1696027356970-b1527cc0d33c', 'photo-1652820330085-82a0c2b88d78', 'photo-1588320070032-53d7c450da75', 'photo-1718799341635-4a6a41c3bc0f', 'photo-1689946727883-0a520a4be63e'];
+const TRIPS = [
+  {code:'HPT', mr:'हंपी', name:'Hampi', t:'Boulders, ruins and coracle rides', d:'11 DEC', full:'11 to 14 Dec 2026', date:'11 DEC 2026', l:'3N / 4D', p:'Pune, Mumbai', price:'₹12,499', seats:6, img:'photo-1689946727883-0a520a4be63e'},
+  {code:'UDZ', mr:'उदयपूर', name:'Udaipur', t:'Lakes and lanterns', d:'22 JAN', full:'22 to 26 Jan 2027', date:'22 JAN 2027', l:'4N / 5D', p:'Mumbai', price:'₹18,999', seats:9, img:'photo-1718799341635-4a6a41c3bc0f'},
+  {code:'MAO', mr:'गोवा', name:'Goa', t:'The Sakhi edition', d:'05 FEB', full:'5 to 8 Feb 2027', date:'05 FEB 2027', l:'3N / 4D', p:'Pune, Mumbai', price:'₹13,999', seats:3, img:'photo-1652820330085-82a0c2b88d78'},
+  {code:'ERS', mr:'केरळ', name:'Kerala', t:'Backwaters and tea hills', d:'12 MAR', full:'12 to 17 Mar 2027', date:'12 MAR 2027', l:'5N / 6D', p:'Meet at Kochi', price:'₹22,499', seats:12, img:'photo-1609828913552-f9138ed9e42d'}
+];
+
+// the running view: 4 copies (mirrored every other) so the loop never shows a seam
+$('#strip').innerHTML = [0, 1, 2, 3, 4, 0, 1].map(i => `<div class="fr"><img src="${IMG(VIEW[i], 2000)}" alt=""></div>`).join('');
+let period = 0; const measure = () => { period = [...$$('#strip .fr')].slice(0, VIEW.length).reduce((a, f) => a + f.offsetWidth, 0); };
+$$('#strip img').forEach(i => i.addEventListener('load', measure));
+
+// the coach windows: "you" first, then one window per batch
+const GAP = () => innerWidth < 600 ? innerWidth * .9 : Math.max(innerWidth * .42, 520);
+function layoutTrack() {
+  const W = innerWidth, H = innerHeight, ww = W < 600 ? W * .8 : Math.min(Math.max(W * .3, 300), 470);
+  const wy = H * .15 + (H < 760 ? 165 : 185);
+  const wh = Math.max(120, Math.min(ww * .62, H * .88 - 34 - wy - (W < 600 ? 190 : 150)));
+  $('#track').style.setProperty('--wd', Math.max(46, Math.min(H * .09, 90)) + 'px');
+  const x0 = W / 2 - ww / 2;
+  $$('.cw').forEach((c, i) => { c.style.setProperty('--ww', ww + 'px'); c.style.setProperty('--wh', wh + 'px'); c.style.setProperty('--wy', wy + 'px'); c.style.left = (x0 + i * GAP()) + 'px'; });
+  $$('.bog').forEach((b, i) => { b.style.width = ww * .6 + 'px'; b.style.left = (x0 + i * GAP() + ww * .2) + 'px'; });
+  return {ww, wh, wy, x0};
+}
+$('#track').innerHTML = '<div class="bog"><i class="wh"></i><i class="wh"></i></div>'.repeat(TRIPS.length + 1) + `<article class="cw you" id="you"><div class="glass" style="visibility:hidden"></div><div class="tag">that's you, in the window seat</div></article>` + TRIPS.map((t, i) => {
+  const hot = t.seats < 5;
+  return `<article class="cw"><div class="brd"><b lang="mr">${t.mr}</b><span>${t.name} · ${t.d}</span></div>
+    <div class="glass"><img src="${IMG(t.img, 1100)}" alt="${t.name}" loading="lazy"></div>
+    <div class="info"><div><h3>${t.t}</h3><div class="m"><b>${t.full}</b><span>${t.l} · ${t.p}</span></div></div>
+    <div class="r"><div class="price">${t.price}<span class="seats${hot ? ' hot' : ''}">${hot ? 'Only ' : ''}${t.seats} left</span></div><a class="ask" href="${waLink(`Hi Chal Ga Sakhe! Please save me a berth on ${t.name}: ${t.t} (${t.full}).`)}" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Save my berth</a></div></div></article>`;
+}).join('');
+let geo = layoutTrack();
+
+// departures
+const flap = s => `<span class="flap" data-final="${s}">${[...s].map(() => '<i>&nbsp;</i>').join('')}</span>`;
+$('#boardg').insertAdjacentHTML('beforeend', TRIPS.map(t => {
+  const hot = t.seats < 5;
+  return `<div class="rowb">${flap(t.name.toUpperCase().padEnd(7, ' '))}<span>${t.t}</span>${flap(t.d)}<span class="st${hot ? ' hot' : ''}">${flap(String(t.seats).padStart(2, '0'))} ${hot ? 'ALMOST FULL' : 'SEATS'}</span><a href="${waLink(`Hi Chal Ga Sakhe! I'd like a seat on ${t.name} (${t.full}).`)}" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Book</a></div>`;
+}).join(''));
+
+/* ---------- The ticket builder (finale) ---------- */
+const my = {trip: 0, pick: 'Pune', n: 1, name: ''};
+$('#dest').innerHTML = TRIPS.map((t, i) => `<button type="button" aria-pressed="${i === 0}" data-i="${i}">${t.name} · ${t.d}</button>`).join('');
+function pnr() { let s = 0; for (const c of my.name + my.trip + my.n + my.pick) s = (s * 31 + c.charCodeAt(0)) % 9999991; return `PNR ${String(800 + my.trip * 13).slice(0, 3)}-${String(s).padStart(7, '0')}`; }
+function paint(bump) {
+  const t = TRIPS[my.trip];
+  $('#tFrom').textContent = my.pick === 'Pune' ? 'पुणे' : 'मुंबई'; $('#tFromE').textContent = my.pick === 'Pune' ? 'PUNE JN' : 'MUMBAI CSMT';
+  $('#tTo').textContent = t.mr; $('#tToE').textContent = t.name.toUpperCase();
+  $('#tName').textContent = my.name || 'Your name here';
+  $('#tDate').textContent = t.date; $('#tCnt').textContent = my.n === 1 ? '1 + THE GROUP' : `${my.n} + THE GROUP`;
+  $('#tSeats').textContent = String(t.seats).padStart(2, '0'); $('#tPnr').textContent = pnr(); $('#tPrice').textContent = `${t.price} · BOOK WITH ₹5,000`;
+  $('#send').href = waLink(`Hi Chal Ga Sakhe! 🌻\nI'm interested in:\n\nTrip: ${t.name}: ${t.t}\nDates: ${t.full}\nTravellers: ${my.n}\nPickup: ${my.pick}\n\nPlease share availability, final price, payment plan and room-sharing details.\n- ${my.name || 'Sakhi'}`);
+  if (bump && !reduce) gsap.fromTo('#myT', {y: -6}, {y: 0, duration: .5, ease: 'elastic.out(1,.4)'});
+}
+$('#nm').addEventListener('input', e => { my.name = e.target.value.trim(); paint(); });
+$('#dest').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; my.trip = +b.dataset.i; $$('#dest button').forEach(x => x.setAttribute('aria-pressed', x === b)); paint(true); });
+$('#pick').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; my.pick = b.dataset.v; $$('#pick button').forEach(x => x.setAttribute('aria-pressed', x === b)); paint(true); });
+$('#minus').addEventListener('click', () => { my.n = Math.max(1, my.n - 1); $('#cnt').textContent = my.n; paint(); });
+$('#plus').addEventListener('click', () => { my.n = Math.min(6, my.n + 1); $('#cnt').textContent = my.n; paint(); });
+$('#send').addEventListener('click', () => { if (reduce) return; gsap.fromTo('#stamp2', {opacity: 0, scale: 2.4}, {opacity: 1, scale: 1, duration: .35, ease: 'back.out(3)'}); gsap.fromTo('#myT', {x: -5}, {x: 0, duration: .4, ease: 'elastic.out(1,.3)'}); });
+paint();
+$('#mini').innerHTML = '<i></i>'.repeat(9);
+
+
+/* ---------- Voice notes + parents' FAQ (sample copy) ---------- */
+const VN = [
+  {n:'Aditi', a:28, c:'Pune', t:'Hampi', d:'0:34', q:'I booked alone and told nobody. By day two I was in a group photo with eight women who now know my chai order.'},
+  {n:'Snehal', a:41, c:'Mumbai', t:'Udaipur', d:'0:21', q:'My husband asked ten questions before I booked. After the trip captain called him, he asked when the next one is.'},
+  {n:'Priyanka', a:24, c:'Nashik', t:'Goa', d:'0:47', q:'First time sleeping in a room I did not plan. Zero awkwardness. We were laughing by the first dinner.'},
+  {n:'Sunanda', a:63, c:'Kolhapur', t:'Kerala', d:'0:29', q:'I was the oldest in the batch and nobody made me feel it. They carried my bag and I carried the jokes.'}
+];
+$('#vgrid').innerHTML = VN.map((v, i) => `<article class="vnote" data-i="${i}"><div class="vrow"><button class="vplay" type="button" aria-label="Play voice note from ${v.n}"><i class="ph ph-play"></i></button><div class="vbars" aria-hidden="true">${Array.from({length: 34}, (_, k) => `<i style="height:${20 + Math.abs(Math.sin(k * 1.7 + i) * 80)}%;animation-delay:${(k % 7) * -.12}s"></i>`).join('')}</div><span class="vtime">${v.d}</span></div><p class="vtxt">${v.q}</p><div class="vwho"><b>${v.n}, ${v.a}</b> · ${v.c} · ${v.t}</div></article>`).join('');
+$$('.vnote').forEach(n => n.querySelector('.vplay').addEventListener('click', () => {
+  const on = !n.classList.contains('play');
+  $$('.vnote').forEach(o => { o.classList.remove('play'); o.querySelector('.vplay i').className = 'ph ph-play'; o.querySelectorAll('.vbars i').forEach(b => b.classList.remove('on')); clearInterval(o._t); });
+  if (!on) return;
+  n.classList.add('play'); n.querySelector('.vplay i').className = 'ph ph-pause';
+  const bars = [...n.querySelectorAll('.vbars i')]; let k = 0;
+  n._t = setInterval(() => { if (k < bars.length) bars[k++].classList.add('on'); else { clearInterval(n._t); n.classList.remove('play'); n.querySelector('.vplay i').className = 'ph ph-play'; } }, 140);
+}));
+const FAQ = [
+  ['Is it really safe?', 'Every batch is women only, with a female trip captain who travels with you. Stays are checked by us, and we share live trip updates with the family contact you give us.'],
+  ['Who is the trip captain?', 'A woman from our team who has done the route before. She plans each day, handles every call, and is on WhatsApp with you from a week before you leave.'],
+  ['I am coming alone. Will I be left out?', 'Most sakhis book alone. Rooms are twin or triple with women from your batch, and your WhatsApp group opens a week early so you meet before day one.'],
+  ['What does the price include?', 'Stay, travel from Pune or Mumbai, the planned meals and activities, and the captain. The full list comes on WhatsApp before you pay anything.'],
+  ['How do I pay, and can I cancel?', 'Hold your berth with ₹5,000 and pay the rest later. If plans change, tell us early and we move you to the next batch where we can. Exact terms are shared before you book.'],
+  ['Can my mother or husband talk to you first?', 'Yes. Send them the button on this page, or share your number. We are happy to call a worried parent.']
+];
+$('#qs').innerHTML = FAQ.map((f, i) => `<div class="q"><button type="button" aria-expanded="false" aria-controls="a${i}"><span class="no">0${i + 1}</span><span>${f[0]}</span><i class="ph ph-plus pm"></i></button><i class="punch" aria-hidden="true"></i><div class="ans" id="a${i}" role="region"><div><p>${f[1]}</p></div></div></div>`).join('');
+$$('.q button').forEach(b => b.addEventListener('click', () => { const q = b.parentElement, open = !q.classList.contains('open'); q.classList.toggle('open', open); b.setAttribute('aria-expanded', open); }));
+$$('.q')[0].classList.add('open'); $$('.q button')[0].setAttribute('aria-expanded', 'true');
+$('#mom').href = waLink('Hi mom! This is the women-only travel group I told you about. Read the "Ticket check" questions: ' + location.href.split('#')[0] + '#faq');
+
+gsap.registerPlugin(ScrollTrigger);
+let lenis = null, finished = false, intro, heroPin;
+if (!reduce) {
+  lenis = new Lenis({lerp: .085});
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+  lenis.stop();
+}
+
+/* ---------- The view never stops: a ticker moves the hills, poles and wheels; scrolling adds speed ---------- */
+const run = {speed: 0, boost: 0, x: 0, poles: 0, wheel: 0};
+const clip = {p: 0, inset: 0}; // p: 0 = window fills the screen, 1 = it is the "you" window on the coach
+function rectOfYou() {
+  const r = $('#you .glass').getBoundingClientRect();
+  return {t: r.top, l: r.left, b: innerHeight - r.bottom, rr: innerWidth - r.right};
+}
+function tick(_, dt) {
+  const s = (run.speed + run.boost) * dt / 1000;
+  const strip = $('#strip'); if (!period) measure();
+  run.x = (run.x - s) % (period || innerWidth * 3); strip.style.transform = `translate3d(${run.x}px,0,0)`;
+  run.poles += s * 3.2;
+  const span = innerWidth * 1.3;
+  $$('#poles i').forEach((p, i) => { const k = (run.poles + i * span / 2) % span; p.style.transform = `translate3d(${innerWidth * 1.15 - k}px,0,0)`; });
+  run.wheel = (run.wheel + s * .9) % 360;
+  $$('.wh').forEach(w => w.style.transform = `rotate(${run.wheel}deg)`);
+  $('#ties').style.backgroundPositionX = (run.x * 1.4) + 'px';
+  run.boost *= .94;
+  // the running view is clipped to the frame now, and to the "you" window as the camera pulls back
+  const f = clip.inset, R = rectOfYou(), p = clip.p;
+  const L = (a, b) => a + (b - a) * p;
+  const cp = `inset(${L(f, R.t)}px ${L(f, R.rr)}px ${L(f, R.b)}px ${L(f, R.l)}px round ${L(34, 34)}px)`;
+  $('#view').style.clipPath = cp;
+  const ring = $('#ring');
+  ring.style.top = L(f, R.t) + 'px'; ring.style.left = L(f, R.l) + 'px';
+  ring.style.width = (innerWidth - L(f, R.l) - L(f, R.rr)) + 'px'; ring.style.height = (innerHeight - L(f, R.t) - L(f, R.b)) + 'px';
+}
+gsap.ticker.add(tick);
+
+/* ---------- Loader: the ticket prints; PNR digits settle with real progress ---------- */
+function runLoader() {
+  return new Promise(resolve => {
+    const imgs = $$('#strip img').slice(0, 2);
+    const tasks = [document.fonts.ready, ...imgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve())];
+    let done = 0; tasks.forEach(t => t.then(() => done++));
+    setTimeout(() => { done = tasks.length; }, 9000);
+    gsap.fromTo('#tkt', {yPercent: -105}, {yPercent: 0, duration: 3.2, ease: 'power1.inOut'});
+    const FINAL = '842-5519073', shown = {v: 0}, start = performance.now(), MIN = 3500;
+    const step = () => {
+      const target = Math.min(done / tasks.length, (performance.now() - start) / MIN);
+      shown.v += (target - shown.v) * .08; const v = Math.min(1, shown.v + .004);
+      const settled = Math.floor(v * FINAL.length);
+      $('#pnr').textContent = [...FINAL].map((c, i) => c === '-' ? '-' : i < settled ? c : Math.floor(Math.random() * 10)).join('');
+      $('#pct').textContent = 'PRINTING ' + Math.round(v * 100) + '%';
+      $('#bar').style.setProperty('--p', (v * 100) + '%');
+      if (v >= .999) {
+        $('#pct').textContent = 'PRINTED'; $('#lcap').textContent = 'Stamping';
+        gsap.to('#stamp', {opacity: 1, scale: 1, duration: .35, ease: 'back.out(3)', onComplete: () => { gsap.fromTo('#tkt', {x: -4}, {x: 0, duration: .3, ease: 'elastic.out(1,.3)'}); setTimeout(resolve, 520); }});
+        return;
+      }
+      requestAnimationFrame(step);
+    };
+    step();
+  });
+}
+
+/* ---------- Intro ~8 s: tear, your train on the viaduct, take the window seat, words and stickers ---------- */
+function splitH1() {
+  const h = $('#h1'), seg = 'Segmenter' in Intl ? [...new Intl.Segmenter('mr', {granularity: 'grapheme'}).segment(h.textContent)].map(s => s.segment) : [...h.textContent];
+  h.innerHTML = seg.map(c => c === ' ' ? ' ' : `<span class="ch" aria-hidden="true">${c}</span>`).join('');
+}
+const FRAME = () => Math.max(18, Math.min(innerWidth * .035, 48));
+function buildIntro() {
+  gsap.set(['#head', '.stk'], {opacity: 0});
+  const tl = gsap.timeline({defaults: {ease: 'expo.out'}, onComplete: finish});
+  // tear along the perforation (Voldog: the card becomes the hero)
+  tl.to('#tTop', {yPercent: -160, rotation: -8, duration: .9, ease: 'power3.in'}, 0)
+    .to('#tBot, #stamp', {yPercent: 260, rotation: 10, duration: .9, ease: 'power3.in'}, 0)
+    .to('.perf', {opacity: 0, duration: .2}, 0)
+    .to('#loader', {backgroundColor: 'rgba(90,15,30,0)', duration: .6}, .3)
+    .to('#lcap', {opacity: 0, duration: .3}, 0)
+    .set('#loader', {display: 'none'}, .95)
+    // the tear opens straight onto your window: the view is already rushing past, then the frame closes in
+    .fromTo(run, {speed: 90}, {speed: 380, duration: 2.2, ease: 'power2.inOut'}, 0)
+    .fromTo(clip, {inset: 0}, {inset: () => FRAME(), duration: 1.2, ease: 'expo.out'}, 1.1)
+    // the words, with a keyline, then stickers slapped onto the glass (Crav)
+    .set('#head', {opacity: 1}, 1.6)
+    .from('#h1 .ch', {yPercent: 120, rotation: () => gsap.utils.random(-14, 14), scale: .6, duration: .8, stagger: .06, ease: 'back.out(2)'}, 1.6)
+    .to('#hsub', {opacity: 1, duration: .6}, 2.5)
+    .fromTo('.stk', {opacity: 0, scale: 2.2}, {opacity: 1, scale: 1, duration: .35, ease: 'back.out(3)', stagger: .22}, 2.8)
+    .to('#tbtn, #brand, #hbar', {opacity: 1, duration: .6}, 4.0);
+  return tl;
+}
+function finish() {
+  if (finished) return; finished = true;
+  $('#skip').hidden = true;
+  gsap.set('#loader', {display: 'none'});
+  gsap.set(['#head', '#hsub', '.stk'], {opacity: 1}); gsap.set('#h1 .ch', {clearProps: 'transform'});
+  if (run.speed < 380) gsap.to(run, {speed: 380, duration: .6});
+  clip.inset = FRAME();
+  ['#brand', '#tbtn', '#hbar'].forEach(s => $(s).style.opacity = 1);
+  stage();
+  if (lenis) lenis.start();
+}
+$('#skip').addEventListener('click', () => { if (intro) intro.progress(1); finish(); });
+
+/* ---------- One pinned stage: pull back, travel along the coach, into the tunnel ---------- */
+// created after the intro so it starts exactly from what is on screen: no jump when the scroll begins
+function stage() {
+  const travel = () => (TRIPS.length) * GAP();
+  const count = $('#ccount'), cws = $$('.cw');
+  const tl = gsap.timeline({scrollTrigger: {start: () => heroPin.start, end: () => heroPin.end, scrub: 1, refreshPriority: 1, invalidateOnRefresh: true,
+    onUpdate: s => {
+      run.boost = Math.min(900, Math.abs(s.getVelocity()) * .35);
+      const x = gsap.getProperty('#track', 'x'); let best = 0, bd = 1e9;
+      cws.forEach((c, i) => { const r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - innerWidth / 2); if (d < bd) { bd = d; best = i; } });
+      count.textContent = best === 0 ? 'WINDOW 1 / 5 · YOU' : `WINDOW ${best + 1} / 5 · ${TRIPS[best - 1].name.toUpperCase()}`;
+    }}});
+  const pull = innerHeight * 1.3, trav = travel(), exit = innerHeight * .8, U = pull + trav + exit;
+  // stickers peel off the glass as the camera pulls back (Crav stickers, Jesko reveal)
+  tl.to('.stk', {y: i => [-260, -300, 280, 300][i], rotation: i => [-40, 30, 25, -35][i], opacity: 0, duration: .35 * pull / U, stagger: .02 * pull / U, ease: 'power2.in'}, 0)
+    .to('#head', {scale: .7, opacity: 0, duration: .4 * pull / U, ease: 'power2.in'}, 0)
+    .to(clip, {p: 1, duration: pull / U, ease: 'power2.inOut'}, .05 * pull / U)
+    .to('#track', {opacity: 1, duration: .35 * pull / U}, .45 * pull / U)
+    .to('#rhead', {opacity: 1, duration: .3 * pull / U}, .7 * pull / U)
+    .to('#you .tag', {opacity: 1, duration: .2 * pull / U}, .8 * pull / U)
+    // walk the length of the coach: every other window is a batch (Jesko pinned object + counter)
+    .to('#track', {x: -trav, duration: trav / U, ease: 'none'}, pull / U)
+    // into the tunnel: the dark carries on into the departures board
+    .to('#tunnel', {x: 0, xPercent: 0, duration: exit / U, ease: 'power2.in'}, (pull + trav) / U);
+  gsap.set('#tunnel', {xPercent: 100, x: 0});
+  gsap.set('#track', {opacity: 0});
+  $$('.cw .glass img').forEach(img => tl.fromTo(img, {xPercent: 0}, {xPercent: -12, duration: trav / U, ease: 'none'}, pull / U));
+}
+/* gallery: scroll drifts the strip; drag, wheel, arrows and keys add your own offset on top */
+function gallery() {
+  const gs = $('#gstrip'), wrap = $('#gwrap'), G = {prog: 0, off: 0};
+  const max = () => Math.max(0, gs.scrollWidth - innerWidth + 40);
+  function apply() {
+    const m = max(), base = -G.prog * m;
+    G.off = Math.max(-m - base, Math.min(-base, G.off));
+    const x = base + G.off;
+    gs.style.transform = `translate3d(${x}px,0,0)`;
+    const f = m ? -x / m : 0;
+    $('#gfill').style.transform = `scaleX(${.08 + .92 * f})`;
+    const n = gs.children.length, w = (gs.scrollWidth - innerWidth * .1) / n;
+    $('#gcount').textContent = String(Math.min(n, Math.round(-x / w) + 1)).padStart(2, '0') + ' / ' + n;
+  }
+  gsap.to(G, {prog: 1, ease: 'none', onUpdate: apply, scrollTrigger: {trigger: '#gal', start: 'top bottom', end: 'bottom top', scrub: 1, invalidateOnRefresh: true}});
+  const step = () => Math.max(260, innerWidth * .5);
+  const go = d => gsap.to(G, {off: G.off + d, duration: .7, ease: 'power3.out', overwrite: true, onUpdate: apply});
+  $('#gprev').addEventListener('click', () => go(step()));
+  $('#gnext').addEventListener('click', () => go(-step()));
+  wrap.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { go(-step()); e.preventDefault(); } if (e.key === 'ArrowLeft') { go(step()); e.preventDefault(); } });
+  wrap.addEventListener('wheel', e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); gsap.killTweensOf(G, 'off'); G.off -= e.deltaX; apply(); } }, {passive: false});
+  let down = false, lastX = 0, lastT = 0, vel = 0, moved = 0;
+  wrap.addEventListener('pointerdown', e => { if (e.button) return; down = true; moved = 0; lastX = e.clientX; lastT = performance.now(); vel = 0; gsap.killTweensOf(G, 'off'); });
+  addEventListener('pointermove', e => {
+    if (!down) return;
+    const dx = e.clientX - lastX, now = performance.now();
+    moved += Math.abs(dx); if (moved > 4) wrap.classList.add('drag');
+    vel = dx / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
+    G.off += dx; apply();
+  });
+  const up = () => { if (!down) return; down = false; wrap.classList.remove('drag'); if (Math.abs(vel) > .1) go(vel * 420); };
+  addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  apply();
+}
+function chapters() {
+  // split-flap departures (Jesko rolling list)
+  const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  ScrollTrigger.create({trigger: '#dep', start: 'top 65%', once: true, onEnter: () => {
+    $$('.flap').forEach((f, fi) => {
+      const fin = f.dataset.final, cells = [...f.children];
+      cells.forEach((c, i) => {
+        let n = 8 + i * 2 + fi % 5;
+        const tickF = () => {
+          gsap.fromTo(c, {rotationX: -90}, {rotationX: 0, duration: .08, ease: 'none'});
+          c.textContent = n > 0 ? CH[Math.floor(Math.random() * CH.length)] : (fin[i] === ' ' ? ' ' : fin[i]);
+          if (n-- > 0) setTimeout(tickF, 55);
+        };
+        setTimeout(tickF, fi * 40);
+      });
+    });
+  }});
+  gsap.from('.rowb:not(.h)', {x: -30, opacity: 0, stagger: .08, duration: .8, ease: 'expo.out', scrollTrigger: {trigger: '#dep', start: 'top 65%'}});
+  gsap.from('.dep .lamp', {opacity: 0, duration: 1.4, ease: 'power2.out', scrollTrigger: {trigger: '#dep', start: 'top 60%'}});
+
+  // out of the tunnel: a burst of daylight, then photos drop in and scribbles draw on (Voldog)
+  gsap.to('#burst', {scale: 1, opacity: 0, ease: 'power2.out', scrollTrigger: {trigger: '#why', start: 'top 90%', end: 'top 10%', scrub: true}});
+  $$('.snap').forEach((s, i) => gsap.from(s, {y: 120, rotation: (i - 1) * 12, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: {trigger: s, start: 'top 90%'}}));
+  $$('.scrib path').forEach(p => { const L = p.getTotalLength(); gsap.fromTo(p, {strokeDasharray: L, strokeDashoffset: L}, {strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', scrollTrigger: {trigger: p.closest('.snap'), start: 'top 70%'}}); });
+  gsap.from('.why h2, .why .sub', {y: 50, opacity: 0, stagger: .1, duration: 1.1, ease: 'expo.out', scrollTrigger: {trigger: '.why', start: 'top 70%'}});
+  gsap.to('#wave1', {attr: {d: 'M0 0 H1440 V60 C1180 10 980 80 720 30 C460 -10 240 70 0 30 Z'}, duration: 3, repeat: -1, yoyo: true, ease: 'sine.inOut'});
+
+  // gallery slides sideways with the scroll; voice notes and tickets rise in
+  gallery();
+  gsap.from('.gal .hd > *', {y: 40, opacity: 0, stagger: .1, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: '#gal', start: 'top 70%'}});
+  gsap.from('.vn .k, .vn h2', {y: 40, opacity: 0, stagger: .1, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: '#vn', start: 'top 70%'}});
+  $$('.vnote').forEach((n, i) => gsap.from(n, {y: 80, rotation: i % 2 ? 3 : -3, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: n, start: 'top 90%'}}));
+  gsap.from('.faq .hd > *', {y: 40, opacity: 0, stagger: .1, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: '#faq', start: 'top 70%'}});
+  gsap.from('.q', {x: 60, opacity: 0, stagger: .08, duration: .9, ease: 'expo.out', scrollTrigger: {trigger: '#qs', start: 'top 85%'}});
+
+  // last call: the ticket swings in, the form fields rise, the little train runs the platform forever
+  gsap.from('.fin .hd > *', {y: 40, opacity: 0, stagger: .1, duration: 1.1, ease: 'expo.out', scrollTrigger: {trigger: '#fin', start: 'top 65%'}});
+  gsap.from('.form .f', {y: 30, opacity: 0, stagger: .08, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: '.builder', start: 'top 80%'}});
+  gsap.from('#myT', {y: 160, rotation: 8, opacity: 0, duration: 1.3, ease: 'expo.out', scrollTrigger: {trigger: '.builder', start: 'top 75%'}});
+  gsap.fromTo('#mini', {x: -1200}, {x: () => innerWidth + 40, duration: 14, repeat: -1, ease: 'none'});
+
+  $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => { const h = a.getAttribute('href'); if (h === '#') return; const t = document.querySelector(h); if (!t || !lenis) return; e.preventDefault(); lenis.scrollTo(t, {duration: 1.6}); }));
+}
+function clock() {
+  const now = new Date();
+  $('#clk').textContent = now.toLocaleTimeString('en-GB', {timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit'});
+  $('#days').textContent = Math.max(0, Math.ceil((new Date('2026-12-11T06:00:00+05:30') - now) / 864e5));
+}
+clock(); setInterval(clock, 20000);
+addEventListener('resize', () => { geo = layoutTrack(); measure(); if (finished) clip.inset = FRAME(); });
+
+splitH1();
+if (reduce) {
+  $('#loader').style.display = 'none'; $('#skip').hidden = true;
+  gsap.ticker.remove(tick); $('#ring').style.display = 'none';
+  $('#view').style.clipPath = `inset(${FRAME()}px round 34px)`;
+  gsap.set(['#head', '#hsub', '.stk'], {opacity: 1});
+  $$('.flap').forEach(f => [...f.children].forEach((c, i) => c.textContent = f.dataset.final[i] === ' ' ? ' ' : f.dataset.final[i]));
+  finished = true; ['#brand', '#tbtn', '#hbar'].forEach(s => $(s).style.opacity = 1);
+  // no pinning: show the batches as a plain column under the view
+  $('#track').style.cssText = 'position:relative;height:auto;display:grid;gap:120px;padding:120px 5vw;opacity:1';
+  $$('.cw').forEach(c => { c.style.position = 'relative'; c.style.left = 'auto'; c.style.top = 'auto'; });
+  $('#you').remove(); $('#rhead').style.opacity = 1; $('#film').style.height = 'auto'; $('#film').style.overflow = 'visible';
+} else {
+  // the hero pin exists from the first frame, so no spacer is inserted when the intro hands over to scroll
+  heroPin = ScrollTrigger.create({trigger: '#film', start: 'top top', end: () => '+=' + (innerHeight * 1.3 + TRIPS.length * GAP() + innerHeight * .8), pin: true, refreshPriority: 1, invalidateOnRefresh: true});
+  chapters();
+  runLoader().then(() => { ScrollTrigger.refresh(); intro = buildIntro(); });
+}
+</script>
+</body>
+</html>
