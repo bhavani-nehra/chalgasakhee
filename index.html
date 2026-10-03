@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pravas</title>
+<title>ChalGaSakhee</title>
 <meta name="description" content="Chal Ga Sakhe: women-only group journeys. Concept E, Pravas: your ticket prints and tears open, you take the window seat, and the camera pulls back to show a whole train of sakhis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,21 +11,6 @@
 <link rel="preload" as="image" href="img/photo-1649140068309-6f82e4db2081-2000.webp">
 <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1"></script>
 <style>
-/* Concept E: Pravas (the journey). Reference map (motion/research/immersive-web/README.md):
-   ticket loader with real progress ...................... Crav ("READY TO CRAV!" mascot loader)
-   ticket tears open into the hero ....................... Voldog (card grows into the hero frame)
-   landscape never stops rushing past (ticker, not tween) . Corn Revolution (one continuous camera)
-   white-keyline type, stickers slapped on the glass ..... Crav ("THE BURGER", "SMASHED FRESH")
-   pull back: your window is one window of the coach ..... Jesko Jets (camera move reveals the object) + Lando (hero object)
-   coach windows = batches, counter while pinned ......... Jesko Jets (pinned object, spec columns) + The Shift (01/05)
-   tunnel into the split-flap departures board ........... Jesko Jets (rolling city list)
-   out of the tunnel, photos with hand-drawn scribbles ... Voldog (scribbles, loops) + Crav (wavy edges)
-   fill-in ticket that stamps and opens WhatsApp ......... Voldog (meal-finder quiz) + The Shift (live clock)
-   gallery strip of window frames slides on scroll ......... Corn Revolution (continuous camera) + Jesko (frames as objects)
-   voice-note testimonials ................................ Crav (chat-style proof, playful UI)
-   parents' FAQ as a TTE ticket check, punch on open ...... Voldog (tactile paper UI)
-   Testimonial and FAQ copy is SAMPLE copy: swap for real quotes and real policy before launch.
-   All photography is 3000 px+ source; nothing is scaled past 1.3x. */
 :root{
   --maroon:#5A0F1E; --maroon-2:#3E0914; --turmeric:#F5B301; --rani:#E0457B; --cream:#FFF1DC; --paper:#F7E6C8; --ink:#1F0A10; --leaf:#2E6B3F; --board:#FFD400;
   --ease:cubic-bezier(.16,1,.3,1);
@@ -35,8 +20,8 @@
 html.lenis,html.lenis body{height:auto}
 html.lenis-stopped{overflow:hidden}
 /* no native scrollbar: it would appear when the intro ends and shift the whole page */
-html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
-body{background:var(--maroon);color:var(--cream);font-family:var(--sans);font-size:16.5px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{--vh:1svh;--hh:72px;scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{padding-top:var(--hh);background:var(--maroon);color:var(--cream);font-family:var(--sans);font-size:16.5px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img{display:block}
 a{color:inherit;text-decoration:none}
 button,input,select{font:inherit;color:inherit}
@@ -73,24 +58,24 @@ button{background:none;border:0;cursor:pointer}
 .loader .cap{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,241,220,.6)}
 
 /* ---------- The stage: one pinned coach, one camera ---------- */
-.film{position:relative;height:100vh;height:100svh;overflow:hidden;background:var(--maroon)}
+.film{position:relative;height:calc(var(--vh)*100);overflow:hidden;background:var(--maroon)}
 .layer{position:absolute;inset:0;overflow:hidden}
 /* the coach wall: livery stripes, rivets, bogies */
 .wall{position:absolute;inset:0;background:linear-gradient(180deg,#61111F 0%,var(--maroon) 55%,#4C0C18 100%)}
-.wall::before{content:"";position:absolute;left:0;right:0;top:15vh;height:6px;background:var(--turmeric);box-shadow:0 12px 0 -2px var(--cream)}
-.wall::after{content:"";position:absolute;left:0;right:0;bottom:calc(12vh + 10px);height:6px;background:var(--turmeric);box-shadow:0 -12px 0 -2px var(--cream)}
-.rivets{position:absolute;left:0;right:0;top:calc(15vh - 18px);height:4px;background:radial-gradient(circle,rgba(0,0,0,.35) 1.5px,transparent 2px) 0 0/28px 4px repeat-x}
-.bogies{position:absolute;left:0;right:0;bottom:0;height:12vh;background:linear-gradient(#2B0A12,#1F0A10)}
-.bogies .ties{position:absolute;left:0;right:0;bottom:.9vh;height:6px;background:repeating-linear-gradient(90deg,#4A2A31 0 16px,transparent 16px 40px)}
-.bogies::after{content:"";position:absolute;left:0;right:0;bottom:.9vh;height:2px;background:#6B4A52}
+.wall::before{content:"";position:absolute;left:0;right:0;top:calc(var(--vh)*15);height:6px;background:var(--turmeric);box-shadow:0 12px 0 -2px var(--cream)}
+.wall::after{content:"";position:absolute;left:0;right:0;bottom:calc(calc(var(--vh)*12) + 10px);height:6px;background:var(--turmeric);box-shadow:0 -12px 0 -2px var(--cream)}
+.rivets{position:absolute;left:0;right:0;top:calc(calc(var(--vh)*15) - 18px);height:4px;background:radial-gradient(circle,rgba(0,0,0,.35) 1.5px,transparent 2px) 0 0/28px 4px repeat-x}
+.bogies{position:absolute;left:0;right:0;bottom:0;height:calc(var(--vh)*12);background:linear-gradient(#2B0A12,#1F0A10)}
+.bogies .ties{position:absolute;left:0;right:0;bottom:calc(var(--vh)*.9);height:6px;background:repeating-linear-gradient(90deg,#4A2A31 0 16px,transparent 16px 40px)}
+.bogies::after{content:"";position:absolute;left:0;right:0;bottom:calc(var(--vh)*.9);height:2px;background:#6B4A52}
 /* wheel sets ride inside the track, so they sit under every window, and spin with the train */
-.bog{position:absolute;bottom:1.5vh;height:var(--wd);z-index:1}
+.bog{position:absolute;bottom:calc(var(--vh)*1.5);height:var(--wd);z-index:1}
 .bog::before{content:"";position:absolute;left:0;right:0;top:38%;height:22%;border-radius:6px;background:#3A2328;box-shadow:0 -4px 0 #2B1419}
-.wh{position:absolute;top:0;width:var(--wd);height:var(--wd);margin-left:calc(var(--wd) / -2);border-radius:50%;background:radial-gradient(circle,var(--turmeric) 0 9%,#2A1017 10% 18%,transparent 19%),repeating-conic-gradient(#6B4A52 0 7deg,#140609 7deg 45deg);border:max(4px,.7vh) solid #4A2A31;box-shadow:0 0 0 2px #140609,inset 0 0 0 3px #140609;will-change:transform}
+.wh{position:absolute;top:0;width:var(--wd);height:var(--wd);margin-left:calc(var(--wd) / -2);border-radius:50%;background:radial-gradient(circle,var(--turmeric) 0 9%,#2A1017 10% 18%,transparent 19%),repeating-conic-gradient(#6B4A52 0 7deg,#140609 7deg 45deg);border:max(4px,calc(var(--vh)*.7)) solid #4A2A31;box-shadow:0 0 0 2px #140609,inset 0 0 0 3px #140609;will-change:transform}
 .wh:nth-child(1){left:0}.wh:nth-child(2){left:100%}
-.coachno{position:absolute;right:4vw;top:calc(15vh + 26px);font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:rgba(255,241,220,.55)}
-.livery{position:absolute;left:50%;transform:translateX(-50%);top:calc(15vh - 58px);font-family:var(--disp);font-size:clamp(22px,2.2vw,34px);color:var(--turmeric);text-shadow:0 2px 0 var(--maroon-2)}
-.line{position:absolute;left:5vw;bottom:14vh;max-width:640px;opacity:0;z-index:6}
+.coachno{position:absolute;right:4vw;top:calc(calc(var(--vh)*15) + 26px);font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:rgba(255,241,220,.55)}
+.livery{position:absolute;left:50%;transform:translateX(-50%);top:calc(calc(var(--vh)*15) - 58px);font-family:var(--disp);font-size:clamp(22px,2.2vw,34px);color:var(--turmeric);text-shadow:0 2px 0 var(--maroon-2)}
+.line{position:absolute;left:5vw;bottom:calc(var(--vh)*14);max-width:640px;opacity:0;z-index:6}
 .line .d{display:block;font-size:clamp(36px,4.4vw,66px);line-height:1.12}
 .line .en{font-size:clamp(17px,1.4vw,21px);color:rgba(255,241,220,.85)}
 /* the running view: clipped to wherever "your window" is */
@@ -111,12 +96,12 @@ button{background:none;border:0;cursor:pointer}
 .head p{font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.04em;margin-top:8px;opacity:0;text-shadow:0 2px 14px rgba(0,0,0,.6)}
 .stk{position:absolute;z-index:8;padding:10px 18px;border-radius:14px;font-weight:700;font-size:clamp(14px,1.2vw,18px);line-height:1.1;box-shadow:0 0 0 4px #fff,0 14px 30px rgba(0,0,0,.35);opacity:0;white-space:nowrap}
 .stk.d{font-family:var(--disp);font-weight:400;font-size:clamp(20px,1.8vw,28px)}
-.s1{left:9vw;top:18vh;background:var(--rani);color:#fff;transform:rotate(-8deg)}
-.s2{right:10vw;top:21vh;background:var(--turmeric);color:var(--ink);transform:rotate(6deg)}
-.s3{left:14vw;bottom:19vh;background:var(--cream);color:var(--maroon);transform:rotate(5deg)}
-.s4{right:13vw;bottom:16vh;background:var(--leaf);color:#fff;transform:rotate(-5deg);border-radius:999px}
+.s1{left:9vw;top:calc(var(--vh)*18);background:var(--rani);color:#fff;transform:rotate(-8deg)}
+.s2{right:10vw;top:calc(var(--vh)*21);background:var(--turmeric);color:var(--ink);transform:rotate(6deg)}
+.s3{left:14vw;bottom:calc(var(--vh)*19);background:var(--cream);color:var(--maroon);transform:rotate(5deg)}
+.s4{right:13vw;bottom:calc(var(--vh)*16);background:var(--leaf);color:#fff;transform:rotate(-5deg);border-radius:999px}
 /* the coach windows = batches */
-.rhead{position:absolute;left:4vw;top:calc(15vh + 36px);z-index:6;opacity:0}
+.rhead{position:absolute;left:4vw;top:calc(calc(var(--vh)*15) + 36px);z-index:6;opacity:0}
 .rhead .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--turmeric)}
 .rhead h2{font-family:var(--disp);font-weight:400;font-size:clamp(28px,2.6vw,42px);line-height:1;margin-top:6px}
 .rhead .count{font-family:var(--mono);font-size:13px;margin-top:10px;letter-spacing:.14em;color:rgba(255,241,220,.7)}
@@ -144,9 +129,9 @@ button{background:none;border:0;cursor:pointer}
 .skip[hidden]{display:none}
 
 /* fixed UI */
-.hbar{position:fixed;left:0;right:0;top:0;height:72px;z-index:59;background:var(--cream);box-shadow:0 2px 0 var(--turmeric),0 8px 24px rgba(0,0,0,.18);opacity:0;transition:opacity .8s;pointer-events:none}
-.brand{position:fixed;left:22px;top:20px;z-index:60;font-family:var(--disp);font-size:24px;color:var(--maroon);opacity:0;transition:opacity .8s}
-.ticketbtn{position:fixed;right:18px;top:12px;z-index:60;display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 16px;background:var(--maroon);color:var(--cream);font-weight:700;font-size:14px;border-radius:8px;opacity:0;transition:opacity .8s,transform .3s var(--ease);-webkit-mask:radial-gradient(circle at 0 50%,transparent 7px,#000 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,#000 7.5px) right/51% 100% no-repeat}
+.hbar{position:fixed;left:0;right:0;top:0;height:72px;z-index:59;background:var(--cream);box-shadow:0 2px 0 var(--turmeric),0 8px 24px rgba(0,0,0,.18);pointer-events:none}
+.brand{position:fixed;left:22px;top:20px;z-index:60;font-family:var(--disp);font-size:24px;color:var(--maroon)}
+.ticketbtn{position:fixed;right:18px;top:12px;z-index:60;display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 16px;background:var(--maroon);color:var(--cream);font-weight:700;font-size:14px;border-radius:8px;transition:transform .3s var(--ease);-webkit-mask:radial-gradient(circle at 0 50%,transparent 7px,#000 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,#000 7.5px) right/51% 100% no-repeat}
 .ticketbtn:hover{transform:rotate(-2deg) scale(1.03)}
 .ticketbtn i{font-size:20px;color:var(--turmeric)}
 
@@ -189,9 +174,9 @@ button{background:none;border:0;cursor:pointer}
 .gal .k,.vn .k,.faq .k{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--turmeric)}
 .gal h2,.vn h2,.faq h2{font-family:var(--disp);font-weight:400;font-size:clamp(40px,5vw,80px);line-height:1;margin-top:8px}
 .gal .hd p,.faq .hd p{color:rgba(255,241,220,.75);margin-top:10px;font-size:clamp(15px,1.2vw,18px)}
-.gwrap{overflow:hidden;cursor:grab;touch-action:pan-y;outline-offset:-4px}
+.gwrap{overflow:hidden;padding:22px 0;cursor:grab;touch-action:pan-y;outline-offset:-4px}
 .gwrap.drag{cursor:grabbing}
-.gstrip{display:flex;gap:3vw;padding:0 5vw 1vh;will-change:transform;width:max-content;user-select:none;-webkit-user-select:none}
+.gstrip{display:flex;gap:3vw;padding:0 5vw 1vh 6vw;will-change:transform;width:max-content;user-select:none;-webkit-user-select:none}
 .gctl{display:flex;align-items:center;gap:18px;padding:5vh 5vw 0}
 .gctl button{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:var(--turmeric);box-shadow:inset 0 0 0 2px rgba(245,179,1,.55);transition:background .2s,color .2s}
 .gctl button:hover{background:var(--turmeric);color:var(--ink)}
@@ -290,12 +275,12 @@ button{background:none;border:0;cursor:pointer}
 .fin .foot b{color:var(--turmeric)}
 .fin .foot a:hover{color:var(--cream)}
 @media(max-width:700px){.platform .rail{bottom:112px}.mini{bottom:118px}.platform{height:210px}}
-@media (max-width:760px){.head h1{font-size:17vw;-webkit-text-stroke:2px var(--maroon-2)}.head p{padding:0 6vw}.s3{bottom:26vh}.s4{bottom:15vh}.s1{top:14vh}.s2{top:22vh}.rhead h2{font-size:28px}.livery{display:none}}
+@media (max-width:760px){.head h1{font-size:17vw;-webkit-text-stroke:2px var(--maroon-2)}.head p{padding:0 6vw}.s3{bottom:calc(var(--vh)*26)}.s4{bottom:calc(var(--vh)*15)}.s1{top:calc(var(--vh)*14)}.s2{top:calc(var(--vh)*22)}.rhead h2{font-size:28px}.livery{display:none}}
 /* phones, 300 to 500 px */
 @media (max-width:600px){
   .pnr b{font-size:19px;letter-spacing:.08em}.half{padding:18px}.route div b{font-size:24px}.tkt .rly b{font-size:17px}
-  .hbar{height:64px}.brand{font-size:19px;left:14px;top:21px}.ticketbtn{height:40px;padding:0 12px 0 10px;font-size:12px;right:12px;gap:6px}.ticketbtn i{font-size:16px}
-  .coachno{display:none}.rhead{top:calc(15vh + 22px);left:5vw;right:5vw}.rhead .k{font-size:10px;letter-spacing:.14em}
+  html{--hh:64px}.hbar{height:64px}.brand{font-size:19px;left:14px;top:21px}.ticketbtn{height:40px;padding:0 12px 0 10px;font-size:12px;right:12px;gap:6px}.ticketbtn i{font-size:16px}
+  .coachno{display:none}.rhead{top:calc(calc(var(--vh)*15) + 22px);left:5vw;right:5vw}.rhead .k{font-size:10px;letter-spacing:.14em}
   .cw .brd b{font-size:18px}.cw .brd span{font-size:10.5px}.cw .info{margin-top:18px}.cw h3{font-size:17px}.cw .m b{font-size:14px}.cw .m span{font-size:13px}.cw .price{font-size:17px}.cw .ask{height:34px;padding:0 12px;font-size:12px}
   .cw.you .tag{font-size:22px;bottom:-36px}
   .dep{padding:12vh 5vw}.boardg{padding:10px}
@@ -308,6 +293,7 @@ button{background:none;border:0;cursor:pointer}
   .fin .foot{font-size:10px;letter-spacing:.12em}
 }
 @media (prefers-reduced-motion:reduce){.grain{animation:none}}
+@media (max-width:760px),(pointer:coarse){.grain{display:none}.head h1{text-shadow:3px 3px 0 var(--maroon-2)}.stk{box-shadow:0 0 0 4px #fff}.glare{display:none}}
 </style>
 </head>
 <body>
@@ -482,9 +468,15 @@ let period = 0; const measure = () => { period = [...$$('#strip .fr')].slice(0, 
 $$('#strip img').forEach(i => i.addEventListener('load', measure));
 
 // the coach windows: "you" first, then one window per batch
+/* stable viewport: the small-viewport height never changes when the phone's URL bar slides, so nothing re-layouts mid-scroll */
+const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none'; document.body.appendChild(probe);
+let SH = probe.offsetHeight || innerHeight, SW = innerWidth;
+const HH = () => $('#hbar').offsetHeight || 64, FH = () => SH - HH();
+const setVH = () => document.documentElement.style.setProperty('--vh', FH() / 100 + 'px');
+setVH();
 const GAP = () => innerWidth < 600 ? innerWidth * .9 : Math.max(innerWidth * .42, 520);
 function layoutTrack() {
-  const W = innerWidth, H = innerHeight, ww = W < 600 ? W * .8 : Math.min(Math.max(W * .3, 300), 470);
+  const W = innerWidth, H = FH(), ww = W < 600 ? W * .8 : Math.min(Math.max(W * .3, 300), 470);
   const wy = H * .15 + (H < 760 ? 165 : 185);
   const wh = Math.max(120, Math.min(ww * .62, H * .88 - 34 - wy - (W < 600 ? 190 : 150)));
   $('#track').style.setProperty('--wd', Math.max(46, Math.min(H * .09, 90)) + 'px');
@@ -562,7 +554,7 @@ $$('.q button').forEach(b => b.addEventListener('click', () => { const q = b.par
 $$('.q')[0].classList.add('open'); $$('.q button')[0].setAttribute('aria-expanded', 'true');
 $('#mom').href = waLink('Hi mom! This is the women-only travel group I told you about. Read the "Ticket check" questions: ' + location.href.split('#')[0] + '#faq');
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger); ScrollTrigger.config({ignoreMobileResize: true});
 let lenis = null, finished = false, intro, heroPin;
 if (!reduce) {
   lenis = new Lenis({lerp: .085});
@@ -575,28 +567,30 @@ if (!reduce) {
 const run = {speed: 0, boost: 0, x: 0, poles: 0, wheel: 0};
 const clip = {p: 0, inset: 0}; // p: 0 = window fills the screen, 1 = it is the "you" window on the coach
 function rectOfYou() {
-  const r = $('#you .glass').getBoundingClientRect();
-  return {t: r.top, l: r.left, b: innerHeight - r.bottom, rr: innerWidth - r.right};
+  const r = $('#you .glass').getBoundingClientRect(), fr = $('#film').getBoundingClientRect();
+  return {t: r.top - fr.top, l: r.left, b: fr.bottom - r.bottom, rr: innerWidth - r.right};
 }
+const N = {};
 function tick(_, dt) {
+  if (!N.strip) Object.assign(N, {strip: $('#strip'), poles: $$('#poles i'), whs: $$('.wh'), ties: $('#ties'), view: $('#view'), ring: $('#ring')});
   const s = (run.speed + run.boost) * dt / 1000;
-  const strip = $('#strip'); if (!period) measure();
+  const strip = N.strip; if (!period) measure();
   run.x = (run.x - s) % (period || innerWidth * 3); strip.style.transform = `translate3d(${run.x}px,0,0)`;
   run.poles += s * 3.2;
   const span = innerWidth * 1.3;
-  $$('#poles i').forEach((p, i) => { const k = (run.poles + i * span / 2) % span; p.style.transform = `translate3d(${innerWidth * 1.15 - k}px,0,0)`; });
+  N.poles.forEach((p, i) => { const k = (run.poles + i * span / 2) % span; p.style.transform = `translate3d(${innerWidth * 1.15 - k}px,0,0)`; });
   run.wheel = (run.wheel + s * .9) % 360;
-  $$('.wh').forEach(w => w.style.transform = `rotate(${run.wheel}deg)`);
-  $('#ties').style.backgroundPositionX = (run.x * 1.4) + 'px';
+  N.whs.forEach(w => w.style.transform = `rotate(${run.wheel}deg)`);
+  N.ties.style.backgroundPositionX = (run.x * 1.4) + 'px';
   run.boost *= .94;
   // the running view is clipped to the frame now, and to the "you" window as the camera pulls back
-  const f = clip.inset, R = rectOfYou(), p = clip.p;
+  const f = clip.inset, p = clip.p, R = p > 0 ? rectOfYou() : {t: f, l: f, b: f, rr: f};
   const L = (a, b) => a + (b - a) * p;
   const cp = `inset(${L(f, R.t)}px ${L(f, R.rr)}px ${L(f, R.b)}px ${L(f, R.l)}px round ${L(34, 34)}px)`;
-  $('#view').style.clipPath = cp;
-  const ring = $('#ring');
+  N.view.style.clipPath = cp;
+  const ring = N.ring;
   ring.style.top = L(f, R.t) + 'px'; ring.style.left = L(f, R.l) + 'px';
-  ring.style.width = (innerWidth - L(f, R.l) - L(f, R.rr)) + 'px'; ring.style.height = (innerHeight - L(f, R.t) - L(f, R.b)) + 'px';
+  ring.style.width = (innerWidth - L(f, R.l) - L(f, R.rr)) + 'px'; ring.style.height = (FH() - L(f, R.t) - L(f, R.b)) + 'px';
 }
 gsap.ticker.add(tick);
 
@@ -604,9 +598,10 @@ gsap.ticker.add(tick);
 function runLoader() {
   return new Promise(resolve => {
     const imgs = $$('#strip img').slice(0, 2);
-    const tasks = [document.fonts.ready, ...imgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve())];
+    const cap = (p, ms) => Promise.race([p, new Promise(r => setTimeout(r, ms))]);
+    const tasks = [cap(document.fonts.ready, 2500), ...imgs.slice(0, 1).map(i => cap(i.decode ? i.decode().catch(() => {}) : Promise.resolve(), 2500))];
     let done = 0; tasks.forEach(t => t.then(() => done++));
-    setTimeout(() => { done = tasks.length; }, 9000);
+    setTimeout(() => { done = tasks.length; }, 3000);
     gsap.fromTo('#tkt', {yPercent: -105}, {yPercent: 0, duration: 3.2, ease: 'power1.inOut'});
     const FINAL = '842-5519073', shown = {v: 0}, start = performance.now(), MIN = 3500;
     const step = () => {
@@ -650,8 +645,7 @@ function buildIntro() {
     .set('#head', {opacity: 1}, 1.6)
     .from('#h1 .ch', {yPercent: 120, rotation: () => gsap.utils.random(-14, 14), scale: .6, duration: .8, stagger: .06, ease: 'back.out(2)'}, 1.6)
     .to('#hsub', {opacity: 1, duration: .6}, 2.5)
-    .fromTo('.stk', {opacity: 0, scale: 2.2}, {opacity: 1, scale: 1, duration: .35, ease: 'back.out(3)', stagger: .22}, 2.8)
-    .to('#tbtn, #brand, #hbar', {opacity: 1, duration: .6}, 4.0);
+    .fromTo('.stk', {opacity: 0, scale: 2.2}, {opacity: 1, scale: 1, duration: .35, ease: 'back.out(3)', stagger: .22}, 2.8);
   return tl;
 }
 function finish() {
@@ -661,7 +655,6 @@ function finish() {
   gsap.set(['#head', '#hsub', '.stk'], {opacity: 1}); gsap.set('#h1 .ch', {clearProps: 'transform'});
   if (run.speed < 380) gsap.to(run, {speed: 380, duration: .6});
   clip.inset = FRAME();
-  ['#brand', '#tbtn', '#hbar'].forEach(s => $(s).style.opacity = 1);
   stage();
   if (lenis) lenis.start();
 }
@@ -679,7 +672,7 @@ function stage() {
       cws.forEach((c, i) => { const r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - innerWidth / 2); if (d < bd) { bd = d; best = i; } });
       count.textContent = best === 0 ? 'WINDOW 1 / 5 · YOU' : `WINDOW ${best + 1} / 5 · ${TRIPS[best - 1].name.toUpperCase()}`;
     }}});
-  const pull = innerHeight * 1.3, trav = travel(), exit = innerHeight * .8, U = pull + trav + exit;
+  const pull = SH * 1.3, trav = travel(), exit = SH * .8, U = pull + trav + exit;
   // stickers peel off the glass as the camera pulls back (Crav stickers, Jesko reveal)
   tl.to('.stk', {y: i => [-260, -300, 280, 300][i], rotation: i => [-40, 30, 25, -35][i], opacity: 0, duration: .35 * pull / U, stagger: .02 * pull / U, ease: 'power2.in'}, 0)
     .to('#head', {scale: .7, opacity: 0, duration: .4 * pull / U, ease: 'power2.in'}, 0)
@@ -778,8 +771,13 @@ function clock() {
   $('#days').textContent = Math.max(0, Math.ceil((new Date('2026-12-11T06:00:00+05:30') - now) / 864e5));
 }
 clock(); setInterval(clock, 20000);
-addEventListener('resize', () => { geo = layoutTrack(); measure(); if (finished) clip.inset = FRAME(); });
+addEventListener('resize', () => {
+  const h = probe.offsetHeight || innerHeight;
+  if (innerWidth === SW && Math.abs(h - SH) < 150) return; // URL-bar slide: ignore
+  SW = innerWidth; SH = h; setVH(); geo = layoutTrack(); measure(); if (finished) clip.inset = FRAME(); });
 
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+scrollTo(0, 0);
 splitH1();
 if (reduce) {
   $('#loader').style.display = 'none'; $('#skip').hidden = true;
@@ -787,14 +785,14 @@ if (reduce) {
   $('#view').style.clipPath = `inset(${FRAME()}px round 34px)`;
   gsap.set(['#head', '#hsub', '.stk'], {opacity: 1});
   $$('.flap').forEach(f => [...f.children].forEach((c, i) => c.textContent = f.dataset.final[i] === ' ' ? ' ' : f.dataset.final[i]));
-  finished = true; ['#brand', '#tbtn', '#hbar'].forEach(s => $(s).style.opacity = 1);
+  finished = true;
   // no pinning: show the batches as a plain column under the view
   $('#track').style.cssText = 'position:relative;height:auto;display:grid;gap:120px;padding:120px 5vw;opacity:1';
   $$('.cw').forEach(c => { c.style.position = 'relative'; c.style.left = 'auto'; c.style.top = 'auto'; });
   $('#you').remove(); $('#rhead').style.opacity = 1; $('#film').style.height = 'auto'; $('#film').style.overflow = 'visible';
 } else {
   // the hero pin exists from the first frame, so no spacer is inserted when the intro hands over to scroll
-  heroPin = ScrollTrigger.create({trigger: '#film', start: 'top top', end: () => '+=' + (innerHeight * 1.3 + TRIPS.length * GAP() + innerHeight * .8), pin: true, refreshPriority: 1, invalidateOnRefresh: true});
+  heroPin = ScrollTrigger.create({trigger: '#film', start: () => 'top top+=' + HH(), end: () => '+=' + (SH * 1.3 + TRIPS.length * GAP() + SH * .8), pin: true, refreshPriority: 1, invalidateOnRefresh: true});
   chapters();
   runLoader().then(() => { ScrollTrigger.refresh(); intro = buildIntro(); });
 }
